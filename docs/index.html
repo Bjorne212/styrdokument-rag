@@ -1,0 +1,212 @@
+---
+layout: landing
+title: Styrdokumentsboten för studentkårer
+description: Låt medlemmar, styrelse och fullmäktige fråga kårens styrdokument och få svar med källan bredvid. Gratis att drifta och uppdaterar sig själv.
+---
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="{{ '/' | relative_url }}"><span class="logo-mark" aria-hidden="true">§</span> Styrdokumentsboten</a>
+    <nav class="nav-links" aria-label="Huvudmeny">
+      <a href="#hur">Så funkar det</a>
+      <a href="#fordelar">Fördelar</a>
+      <a href="{{ '/oversikt/' | relative_url }}">Dokumentation</a>
+    </nav>
+    <a class="btn btn-small" href="#kontakt">Skaffa till er kår</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">För studentkårer</p>
+        <h1>Svaret ur stadgan på sekunder. <span class="accent">Med källan bredvid.</span></h1>
+        <p class="hero-lead">Styrdokumentsboten läser kårens stadga, reglemente och policyer, och svarar på frågor från medlemmar, styrelse och fullmäktige. Varje svar hänvisar till rätt dokument och avsnitt. Står det inte i dokumenten säger boten det.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#kontakt">Skaffa till er kår</a>
+          <a class="btn btn-ghost" href="{{ '/oversikt/' | relative_url }}">Så fungerar det</a>
+        </div>
+        <ul class="hero-points">
+          <li>0 kr i månaden</li>
+          <li>Uppdaterar sig själv</li>
+          <li>Inget sparas</li>
+        </ul>
+      </div>
+
+      <div class="chat" role="img" aria-label="Exempel på en fråga och ett svar i chatten">
+        <div class="chat-bar"><span></span><span></span><span></span></div>
+        <div class="chat-body">
+          <div class="msg msg-q">Hur många ledamöter ska valberedningen minst bestå av?</div>
+          <div class="sources">
+            <span class="source">Stadga.pdf <em>Allmänt</em></span>
+          </div>
+          <div class="msg msg-a">Enligt Stadgan ska valberedningen bestå av <strong>minst fyra (4) ledamöter</strong>.</div>
+          <div class="msg msg-q">Vem fastställer medlemsavgiften?</div>
+          <div class="sources">
+            <span class="source">Stadga.pdf <em>Allmänt</em></span>
+          </div>
+          <div class="msg msg-a typing">Enligt Stadgan fastställs medlemsavgiften av kårfullmäktige<span class="caret"></span></div>
+        </div>
+        <p class="chat-caption">Exempel från LinTeks styrdokumentsbot</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="LinTeks arkiv i siffror">
+    <div class="wrap stats-grid">
+      <div><strong>99</strong><span>PDF:er i LinTeks arkiv</span></div>
+      <div><strong>930</strong><span>sidor att leta i</span></div>
+      <div><strong>20/20</strong><span>testfrågor hittar rätt dokument</span></div>
+      <div><strong>0 kr</strong><span>i månaden att drifta</span></div>
+    </div>
+  </section>
+
+  <section class="problem">
+    <div class="wrap narrow">
+      <h2>Ingen läser 930 sidor för att hitta en siffra</h2>
+      <p>Styrdokumenten är kårens regelbok, men de är skrivna för att vara korrekta, inte för att vara lätta att söka i. Frågorna hamnar hos styrelsen, i en gruppchatt eller i ett mejl till talpersonen. Svaren blir "jag tror att" i stället för "det står i reglementet, avsnitt 4.2".</p>
+      <p>Styrdokumentsboten gör dokumenten sökbara med vanliga frågor, på svenska eller engelska, och visar alltid var svaret står så att vem som helst kan kontrollera det.</p>
+    </div>
+  </section>
+
+  <section class="how" id="hur">
+    <div class="wrap">
+      <p class="eyebrow center">Så funkar det</p>
+      <h2 class="center">Från PDF-arkiv till svar i tre steg</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <h3>Peka på ert arkiv</h3>
+          <p>Boten läser dokumenten där de redan ligger: kårens webbplats, ett GitLab-arkiv eller en lista med länkar. Inget nytt ställe att ladda upp till.</p>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <h3>Boten läser in allt</h3>
+          <p>Texten delas i stycken, rubriker och sidfötter känns igen, och allt görs sökbart. Var sjätte timme kontrollerar den om något ändrats.</p>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <h3>Medlemmarna frågar</h3>
+          <p>Svaret skrivs medan man läser, med länk till PDF:en och avsnittet det bygger på. Följdfrågor fungerar som i ett vanligt samtal.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="features" id="fordelar">
+    <div class="wrap">
+      <p class="eyebrow center">Fördelar</p>
+      <h2 class="center">Byggd för hur en kår faktiskt fungerar</h2>
+      <div class="feature-grid">
+        <article class="feature">
+          <h3>Källan alltid synlig</h3>
+          <p>Dokument och avsnitt visas ovanför varje svar, med länk till originalet. Svaret går att kontrollera på tio sekunder.</p>
+        </article>
+        <article class="feature">
+          <h3>Gissar aldrig</h3>
+          <p>Boten får bara svara utifrån det som står i dokumenten. Finns inget svar säger den det, i stället för att hitta på en regel.</p>
+        </article>
+        <article class="feature">
+          <h3>Uppdaterar sig själv</h3>
+          <p>Lägg upp den nya versionen i arkivet som vanligt. Inom sex timmar svarar boten utifrån den, utan att någon behöver röra koden.</p>
+        </article>
+        <article class="feature">
+          <h3>Inget sparas</h3>
+          <p>Inga konton, ingen chatthistorik, inga IP-adresser, inga loggar av frågor. Det finns ingen databas att läcka.</p>
+        </article>
+        <article class="feature">
+          <h3>Gratis att drifta</h3>
+          <p>Allt ryms i GitHubs och Cloudflares gratisnivåer. Ingen server att sköta, ingen faktura att attestera.</p>
+        </article>
+        <article class="feature">
+          <h3>Er kår, ert utseende</h3>
+          <p>Kårens namn, logga och färger. Allt kårspecifikt står i en enda konfigurationsfil, resten delas med andra kårer.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="upkeep">
+    <div class="wrap upkeep-grid">
+      <div>
+        <p class="eyebrow">Drift</p>
+        <h2>Underhållet är samma som i dag</h2>
+        <p>Den som publicerar justerade styrdokument efter ett fullmäktige gör precis som förut. Boten hämtar den nya versionen själv, ersätter den gamla och tar bort det som upphävts.</p>
+        <p>Det enda som krävs är ordning i arkivet: en version per dokument, samma filnamn när det ersätts. Dokumentationen har en färdig checklista för det.</p>
+        <a class="text-link" href="{{ '/uppdatera/' | relative_url }}">Hålla dokumenten korrekta →</a>
+      </div>
+      <ol class="timeline">
+        <li><strong>Fullmäktige beslutar</strong><span>Reglementet ändras</span></li>
+        <li><strong>Ny PDF publiceras</strong><span>Samma ställe, samma filnamn</span></li>
+        <li><strong>Boten märker ändringen</strong><span>Inom sex timmar, eller direkt med en knapp</span></li>
+        <li><strong>Svaren är uppdaterade</strong><span>Gamla stycken är borttagna</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="honest">
+    <div class="wrap narrow">
+      <h2>Ärligt om begränsningarna</h2>
+      <ul class="limits">
+        <li><strong>Specifika frågor, inte sammanställningar.</strong> "Hur många ledamöter har styrelsen?" fungerar utmärkt. "Vilka verksamhetsplaner nämner hållbarhet?" gör det inte, eftersom boten läser åtta stycken per fråga, inte hela arkivet.</li>
+        <li><strong>Runt 80 till 90 frågor per dygn</strong> på gratisnivån, delat av alla. Räcker gott för en kår; behövs mer kostar det runt en krona per hundra frågor.</li>
+        <li><strong>Dokumentet är alltid facit.</strong> Boten kan missa ett stycke. Därför visas källan, så att man kan kontrollera innan man agerar.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="wrap narrow">
+      <h2>Vanliga frågor</h2>
+      <details>
+        <summary>Vad behöver vår kår ha?</summary>
+        <p>Styrdokumenten publicerade som PDF på en öppen webbsida, ett gratis GitHub-konto och ett gratis Cloudflare-konto. Helst ägda av kåren via en funktionsadress, så att boten överlever styrelseskiften.</p>
+      </details>
+      <details>
+        <summary>Hur lång tid tar det att komma igång?</summary>
+        <p>Ungefär en kväll. Det mesta är att beskriva kårens arkiv i konfigurationsfilen och byta logga och färger. Hör av er så hjälper vi till.</p>
+      </details>
+      <details>
+        <summary>Kan vem som helst använda den?</summary>
+        <p>Chatten skyddas av ett delat lösenord som kåren delar ut, till exempel till medlemmar eller förtroendevalda. Det håller dagskvoten till de som ska använda den. Sidan är dessutom dold för sökmotorer.</p>
+      </details>
+      <details>
+        <summary>Vad händer med frågorna vi ställer?</summary>
+        <p>De skickas till språkmodellen hos Cloudflare för att besvaras och glöms sedan. Ingenting loggas eller sparas, varken hos kåren eller i boten.</p>
+      </details>
+      <details>
+        <summary>Fungerar det om våra dokument är skannade?</summary>
+        <p>Nej, boten läser texten i PDF:en. Dokument som exporterats från Word eller Google Docs fungerar direkt. Skannade dokument behöver göras om först.</p>
+      </details>
+      <details>
+        <summary>Är koden öppen?</summary>
+        <p>Ja, under CC BY 4.0. Den får användas, ändras och spridas fritt, även kommersiellt, så länge upphovspersonen anges.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="cta" id="kontakt">
+    <div class="aurora aurora-cta" aria-hidden="true"></div>
+    <div class="wrap narrow center">
+      <h2>Vill er kår ha en egen?</h2>
+      <p>Boten körs i dag på LinTek. Hör av er så sätter vi upp den för er kår, eller använd mallen och gör det själva.</p>
+      <div class="hero-cta center-row">
+        <a class="btn" href="https://www.linkedin.com/in/theodor-l-00245a203">Kontakta Theodor</a>
+        <a class="btn btn-ghost" href="{{ site.repository_url }}">Använd mallen på GitHub</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>Styrdokumentsboten, byggd av Theodor Lindberg. CC BY 4.0.</span>
+    <nav aria-label="Sidfot">
+      <a href="{{ '/oversikt/' | relative_url }}">Dokumentation</a>
+      <a href="{{ '/drift/' | relative_url }}">Drift</a>
+      <a href="{{ site.repository_url }}">GitHub</a>
+    </nav>
+  </div>
+</footer>

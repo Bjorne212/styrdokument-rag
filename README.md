@@ -6,16 +6,9 @@ This is the template version of [LinTek's governing documents bot](https://githu
 
 **Documentation (Swedish): <https://bjorne212.github.io/styrdokument-rag/>**
 
-## Setting it up for a new union
+## Keeping it up to date
 
-The full walkthrough is in the documentation under [Kom igång](https://bjorne212.github.io/styrdokument-rag/kom-igang/). In short:
-
-1. Click **Use this template** to create your own repository.
-2. Describe the union and its document archive in `kar.config.json`, then run `node scripts/configure.mjs`.
-3. Replace the logo, favicon and accent colours.
-4. Create a Vectorize index and an API token in Cloudflare.
-5. Add `CLOUDFLARE_ACCOUNT_ID` (variable), `CLOUDFLARE_API_TOKEN` and `SHARED_PASSWORD` (secrets) to the repository.
-6. Push. GitHub Actions deploys the chat and keeps the index in sync every six hours.
+The bot reads the union's public document archive and nothing else, so updating it means updating the archive: publish the new PDF under the same filename, remove superseded versions, and the scheduled job picks up the change within six hours. See [Hålla dokumenten korrekta](https://bjorne212.github.io/styrdokument-rag/uppdatera/) and [Drift](https://bjorne212.github.io/styrdokument-rag/drift/) for routines, monitoring and handover between boards.
 
 ## Document sources
 
@@ -57,7 +50,7 @@ docs/            Documentation site                       (GitHub Pages)
 examples/        Example configurations for other source types
 ```
 
-The repository ships configured for LinTek, the reference instance. `ingestion/duplicates.json`, `eval/questions.json` and `worker/src/glossary.json` contain LinTek's data and should be reset for another union, as described in the setup guide.
+The repository ships configured for LinTek, the reference instance. `ingestion/duplicates.json`, `eval/questions.json` and `worker/src/glossary.json` contain LinTek's data and should be reset for another union.
 
 ## Publishing the documentation
 

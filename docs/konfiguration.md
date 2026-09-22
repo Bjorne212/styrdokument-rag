@@ -49,7 +49,7 @@ Skriptet kontrollerar att filen är komplett och skriver över Workerns namn och
 | `documentsUrl` | Länken "Öppna fullständiga styrdokument" på startsidan. |
 | `author` | Namn och länk i sidfoten. |
 | `cloudflare.workerName` | Workerns namn. Blir en del av adressen: `https://<workerName>.<konto>.workers.dev`. Gemener, siffror och bindestreck. |
-| `cloudflare.indexName` | Vectorize-indexets namn. Måste finnas i Cloudflare, se [Kom igång](../kom-igang/#cloudflare). |
+| `cloudflare.indexName` | Vectorize-indexets namn. Måste finnas i Cloudflare med 1024 dimensioner, se [Drift](../drift/#resurser). |
 | `source` | Var dokumenten finns och hur de läses. Se nästa avsnitt. |
 | `cleanup.boilerplate` | Textbitar ur sidhuvud och sidfot. Varje rad som *innehåller* någon av dem tas bort före indexering. |
 | `cleanup.swedishMarkers` | Extra ord som bara förekommer i svensk text. Används för att märka varje stycke som svenska eller engelska. |
@@ -165,7 +165,7 @@ I `worker/wrangler.toml` under `[vars]`. Ändras utan kodändring, slår igenom 
 | `HISTORY_TURNS` | `2` | Antal tidigare fråga/svar-par som följer med en följdfråga. `0` stänger av följdfrågor. |
 | `HISTORY_ANSWER_CHARS` | `500` | Hur mycket av ett tidigare svar som skickas med. |
 
-Lösenordet sätts som secret, aldrig här. Se [Kom igång](../kom-igang/#hemligheter).
+Lösenordet sätts som secret, aldrig här. Se [Drift](../drift/#resurser).
 
 ## Systemprompten
 
