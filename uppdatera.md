@@ -49,7 +49,7 @@ Rekommendationen är därför:
 
 ### Om arkivet är en vanlig webbsida
 
-Med källtypen `html-links` upptäcks ändringar genom att sidan med länkarna ändras. Byts en PDF ut under **exakt samma filnamn** ändras inte sidan, och ändringen syns inte förrän sidan ändras av någon annan anledning. Kör då indexeringen för hand med rutan **Indexera om allt** ikryssad. Den läser in alla dokument på nytt, vilket kostar omkring 300 neurons för ett arkiv av LinTeks storlek. Se [Konfiguration](../konfiguration/#kalltyper) för hur de andra källtyperna upptäcker ändringar.
+Med källtypen `html-links` upptäcks ändringar genom att sidan med länkarna ändras. Byts en PDF ut under **exakt samma filnamn** ändras inte sidan, och ändringen syns inte förrän sidan ändras av någon annan anledning. Kör då indexeringen för hand med rutan **Indexera om allt** ikryssad. Den läser in alla dokument på nytt, vilket kostar omkring 350 neurons för ett arkiv av LinTeks storlek, se [Kostnader](../kostnader/). Se [Konfiguration](../konfiguration/#kalltyper) för hur de andra källtyperna upptäcker ändringar.
 
 ## Lägga till och ta bort
 
