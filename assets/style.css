@@ -26,6 +26,8 @@
 
 * { box-sizing: border-box; }
 
+/* Sidan ska inte gå att dra utanför sina kanter, varken i sidled eller med studs. */
+html, body { overflow-x: hidden; overflow-x: clip; overscroll-behavior: none; }
 html { -webkit-text-size-adjust: 100%; }
 
 body {
