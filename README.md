@@ -46,15 +46,14 @@ frontend/        Interface source                         (React, built to pages
 local/           Development and evaluation tools         (Ollama)
 eval/            Evaluation questions with known answers
 scripts/         configure.mjs: validates the configuration
-docs/            Documentation site                       (GitHub Pages)
 examples/        Example configurations for other source types
 ```
 
 The repository ships configured for LinTek, the reference instance. `ingestion/duplicates.json`, `eval/questions.json` and `worker/src/glossary.json` contain LinTek's data and should be reset for another union.
 
-## Publishing the documentation
+## Documentation
 
-The documentation is a Jekyll site in `docs/`. Enable it under **Settings → Pages → Deploy from a branch → `main` / `docs`**. GitHub builds it on every push.
+The documentation site is kept on the separate `gh-pages` branch, so it is not part of the code you get when you fork or copy `main`. It is published at <https://bjorne212.github.io/styrdokument-rag/>.
 
 ## License
 

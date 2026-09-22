@@ -12,9 +12,6 @@ dist/
 # innehållet beror på kar.config.json och skulle annars bli inaktuellt.
 pages/
 
-# Jekyll-bygge av dokumentationssajten
-docs/_site/
-docs/.jekyll-cache/
 
 # Nedladdade PDF:er och mellanliggande data (hämtas alltid om från källan)
 ingestion/cache/
