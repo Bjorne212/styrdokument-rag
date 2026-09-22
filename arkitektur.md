@@ -140,7 +140,7 @@ Det går att lita på eftersom båda sidor kör samma embeddingmodell, `bge-m3`,
 
 Båda hoppar över sig själva om repovariabeln `CLOUDFLARE_ACCOUNT_ID` saknas, så att en ny kopia av mallen inte får misslyckade jobb innan den är konfigurerad.
 
-## Uppdatera från mallen
+## Uppdatera från mallen {#uppdatera-fran-mallen}
 
 Kårernas repon är kopior, inte forkar, och får inte uppdateringar automatiskt. För att hämta förbättringar från mallen:
 

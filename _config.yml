@@ -9,15 +9,15 @@ kramdown:
 repository_url: https://github.com/Bjorne212/styrdokument-rag
 
 nav:
-  - title: Översikt
-    url: /
-  - title: Kom igång för en ny kår
-    url: /kom-igang/
+  - title: Så fungerar det
+    url: /oversikt/
+  - title: Hålla dokumenten korrekta
+    url: /uppdatera/
+  - title: Drift
+    url: /drift/
   - title: Konfiguration
     url: /konfiguration/
   - title: Arkitektur
     url: /arkitektur/
   - title: Utvärdering
     url: /utvardering/
-  - title: Drift och gränser
-    url: /drift/
