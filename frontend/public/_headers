@@ -1,0 +1,7 @@
+# Cloudflare läser den här filen och sätter headers på statiska filer.
+#
+# X-Robots-Tag gör samma sak som en noindex-metatagg, men gäller varje svar
+# även bilder, typsnitt och robots.txt, som inte kan bära en metatagg. Den
+# täcker också robotar som struntar i robots.txt.
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet

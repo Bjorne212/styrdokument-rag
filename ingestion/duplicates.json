@@ -1,0 +1,242 @@
+{
+  "comment": "Genererad av src/duplicates.ts. Dokumenten i skip är engelska versioner av ett svenskt dokument som redan finns i indexet, och hoppas över vid indexering.",
+  "threshold": 0.75,
+  "pairs": [
+    {
+      "score": 0.9376,
+      "keep": "strategier/pdf/Strategi för varumärkes- och informationsarbete.pdf",
+      "skip": "strategier/pdf/Strategy on brand and information-related work.pdf"
+    },
+    {
+      "score": 0.9261,
+      "keep": "allmant/pdf/Arbetsbeskrivningar.pdf",
+      "skip": "allmant/pdf/Job descriptions.pdf"
+    },
+    {
+      "score": 0.9244,
+      "keep": "policys/pdf/Policy för användning av LinTeks bil.pdf",
+      "skip": "policys/pdf/Policy on the use of LinTek’s car.pdf"
+    },
+    {
+      "score": 0.9223,
+      "keep": "allmant/pdf/Mål- och visionsdokument.pdf",
+      "skip": "allmant/pdf/Goals and Visions document.pdf"
+    },
+    {
+      "score": 0.9158,
+      "keep": "rutiner/pdf/Rutin för behandling av personuppgifter.pdf",
+      "skip": "rutiner/pdf/Procedure on processing personal data.pdf"
+    },
+    {
+      "score": 0.9127,
+      "keep": "allmant/pdf/Åsiktsprogram.pdf",
+      "skip": "allmant/pdf/Positions programme.pdf"
+    },
+    {
+      "score": 0.9119,
+      "keep": "allmant/pdf/Arbetsvillkor.pdf",
+      "skip": "allmant/pdf/Terms of work.pdf"
+    },
+    {
+      "score": 0.9102,
+      "keep": "policys/pdf/Policy för Näringslivsverksamhet.pdf",
+      "skip": "policys/pdf/Policy for commercial activities.pdf"
+    },
+    {
+      "score": 0.9021,
+      "keep": "allmant/pdf/Reglemente.pdf",
+      "skip": "allmant/pdf/Regulations.pdf"
+    },
+    {
+      "score": 0.8989,
+      "keep": "direktiv/pdf/Direktiv för bolag.pdf",
+      "skip": "direktiv/pdf/Instructions for companies.pdf"
+    },
+    {
+      "score": 0.8932,
+      "keep": "policys/pdf/Uppförandepolicy för näringlivspartner.pdf",
+      "skip": "policys/pdf/Code of conduct for buissness partners.pdf"
+    },
+    {
+      "score": 0.8892,
+      "keep": "direktiv/pdf/Direktiv för grafisk profil.pdf",
+      "skip": "direktiv/pdf/Instructions for graphic identity.pdf"
+    },
+    {
+      "score": 0.8879,
+      "keep": "strategier/pdf/Strategi för LinTeks mål och visioner.pdf",
+      "skip": "strategier/pdf/Strategy for LinTek's Goals and Visions.pdf"
+    },
+    {
+      "score": 0.8858,
+      "keep": "policys/pdf/Policy för nyttjande av nycklar till LinTeks lokaler.pdf",
+      "skip": "policys/pdf/Policy for the use of keys to LinTek premises.pdf"
+    },
+    {
+      "score": 0.8846,
+      "keep": "direktiv/pdf/Direktiv för varumärken och kommunikation.pdf",
+      "skip": "direktiv/pdf/Instructions on brands and communication.pdf"
+    },
+    {
+      "score": 0.8845,
+      "keep": "strategier/pdf/Strategi för gemenskap.pdf",
+      "skip": "strategier/pdf/Strategy on community.pdf"
+    },
+    {
+      "score": 0.8842,
+      "keep": "policys/pdf/Policy för användning av LinTeks truck.pdf",
+      "skip": "policys/pdf/Policy for the use of LinTek's forklift.pdf"
+    },
+    {
+      "score": 0.8808,
+      "keep": "rutiner/pdf/Rutin för hantering av kränkande behandling.pdf",
+      "skip": "rutiner/pdf/Procedure on handling abusive treatment.pdf"
+    },
+    {
+      "score": 0.8793,
+      "keep": "policys/pdf/Policy för arbetsdator samt arbetstelefon.pdf",
+      "skip": "policys/pdf/Work computer and work phone policy.pdf"
+    },
+    {
+      "score": 0.8793,
+      "keep": "direktiv/pdf/Direktiv för krishantering och avbrutet förtroendeuppdrag.pdf",
+      "skip": "direktiv/pdf/Instructions on crisis management and terminated position of trust.pdf"
+    },
+    {
+      "score": 0.875,
+      "keep": "policys/pdf/Mottagningspolicy-2022.pdf",
+      "skip": "policys/pdf/Welcome weeks policy-2022.pdf"
+    },
+    {
+      "score": 0.8706,
+      "keep": "strategier/pdf/Strategi för Lika Villkor.pdf",
+      "skip": "strategier/pdf/Strategy for Equal Opportunities.pdf"
+    },
+    {
+      "score": 0.8694,
+      "keep": "direktiv/pdf/Direktiv för arrangemang.pdf",
+      "skip": "direktiv/pdf/Instructions for events.pdf"
+    },
+    {
+      "score": 0.8683,
+      "keep": "direktiv/pdf/Direktiv för utbildningsbevakning.pdf",
+      "skip": "direktiv/pdf/Instructions on educational monitoring.pdf"
+    },
+    {
+      "score": 0.8629,
+      "keep": "riktlinjer/pdf/Riktlinjer för äskningar.pdf",
+      "skip": "riktlinjer/pdf/Guidelines on association funding requests.pdf"
+    },
+    {
+      "score": 0.8596,
+      "keep": "direktiv/pdf/Direktiv för representation och tjänsteresor.pdf",
+      "skip": "direktiv/pdf/Instructions for entertainment and official travel.pdf"
+    },
+    {
+      "score": 0.8581,
+      "keep": "rutiner/pdf/Rutin för tidrapportering.pdf",
+      "skip": "rutiner/pdf/Procedure for time reporting.pdf"
+    },
+    {
+      "score": 0.8569,
+      "keep": "allmant/pdf/Stadga.pdf",
+      "skip": "allmant/pdf/Bylaw.pdf"
+    },
+    {
+      "score": 0.8503,
+      "keep": "policys/pdf/Policy för användning av inventarier.pdf",
+      "skip": "policys/pdf/Policy on the use of items of equipment.pdf"
+    },
+    {
+      "score": 0.8475,
+      "keep": "direktiv/pdf/Direktiv för arbete med teknologsektionerna.pdf",
+      "skip": "direktiv/pdf/Instructions for working with the science and engineering student sections.pdf"
+    },
+    {
+      "score": 0.8467,
+      "keep": "riktlinjer/pdf/Riktlinjer för personval.pdf",
+      "skip": "riktlinjer/pdf/Guidelines on the election of individuals.pdf"
+    },
+    {
+      "score": 0.846,
+      "keep": "riktlinjer/pdf/Riktlinjer för styrdokument.pdf",
+      "skip": "riktlinjer/pdf/Guidelines on governing documents.pdf"
+    },
+    {
+      "score": 0.844,
+      "keep": "direktiv/pdf/Direktiv för ekonomiska rutiner.pdf",
+      "skip": "direktiv/pdf/Instructions for financial procedures.pdf"
+    },
+    {
+      "score": 0.837,
+      "keep": "direktiv/pdf/Direktiv för utmärkelser.pdf",
+      "skip": "direktiv/pdf/Instructions for awards.pdf"
+    },
+    {
+      "score": 0.8279,
+      "keep": "riktlinjer/pdf/Riktlinjer för implementering.pdf",
+      "skip": "riktlinjer/pdf/Guidelines on implementation.pdf"
+    },
+    {
+      "score": 0.8174,
+      "keep": "direktiv/pdf/Direktiv för utskott.pdf",
+      "skip": "direktiv/pdf/Instructions for committees.pdf"
+    },
+    {
+      "score": 0.8164,
+      "keep": "policys/pdf/Policy för systematiskt arbetsmiljöarbete.pdf",
+      "skip": "policys/pdf/Policy on systematic work environment management.pdf"
+    },
+    {
+      "score": 0.8143,
+      "keep": "allmant/pdf/Valberedningens dokument.pdf",
+      "skip": "allmant/pdf/Document of the Nomination Committee.pdf"
+    },
+    {
+      "score": 0.7679,
+      "keep": "direktiv/pdf/Direktiv för uppdrag.pdf",
+      "skip": "direktiv/pdf/Instructions for assignments.pdf"
+    }
+  ],
+  "skip": [
+    "strategier/pdf/Strategy on brand and information-related work.pdf",
+    "allmant/pdf/Job descriptions.pdf",
+    "policys/pdf/Policy on the use of LinTek’s car.pdf",
+    "allmant/pdf/Goals and Visions document.pdf",
+    "rutiner/pdf/Procedure on processing personal data.pdf",
+    "allmant/pdf/Positions programme.pdf",
+    "allmant/pdf/Terms of work.pdf",
+    "policys/pdf/Policy for commercial activities.pdf",
+    "allmant/pdf/Regulations.pdf",
+    "direktiv/pdf/Instructions for companies.pdf",
+    "policys/pdf/Code of conduct for buissness partners.pdf",
+    "direktiv/pdf/Instructions for graphic identity.pdf",
+    "strategier/pdf/Strategy for LinTek's Goals and Visions.pdf",
+    "policys/pdf/Policy for the use of keys to LinTek premises.pdf",
+    "direktiv/pdf/Instructions on brands and communication.pdf",
+    "strategier/pdf/Strategy on community.pdf",
+    "policys/pdf/Policy for the use of LinTek's forklift.pdf",
+    "rutiner/pdf/Procedure on handling abusive treatment.pdf",
+    "policys/pdf/Work computer and work phone policy.pdf",
+    "direktiv/pdf/Instructions on crisis management and terminated position of trust.pdf",
+    "policys/pdf/Welcome weeks policy-2022.pdf",
+    "strategier/pdf/Strategy for Equal Opportunities.pdf",
+    "direktiv/pdf/Instructions for events.pdf",
+    "direktiv/pdf/Instructions on educational monitoring.pdf",
+    "riktlinjer/pdf/Guidelines on association funding requests.pdf",
+    "direktiv/pdf/Instructions for entertainment and official travel.pdf",
+    "rutiner/pdf/Procedure for time reporting.pdf",
+    "allmant/pdf/Bylaw.pdf",
+    "policys/pdf/Policy on the use of items of equipment.pdf",
+    "direktiv/pdf/Instructions for working with the science and engineering student sections.pdf",
+    "riktlinjer/pdf/Guidelines on the election of individuals.pdf",
+    "riktlinjer/pdf/Guidelines on governing documents.pdf",
+    "direktiv/pdf/Instructions for financial procedures.pdf",
+    "direktiv/pdf/Instructions for awards.pdf",
+    "riktlinjer/pdf/Guidelines on implementation.pdf",
+    "direktiv/pdf/Instructions for committees.pdf",
+    "policys/pdf/Policy on systematic work environment management.pdf",
+    "allmant/pdf/Document of the Nomination Committee.pdf",
+    "direktiv/pdf/Instructions for assignments.pdf"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "lintek",
+  "name": "LinTek",
+  "nameGenitive": "LinTeks",
+  "description": "teknologsektionernas studentkår vid Linköpings universitet",
+  "botName": "Styrdokumentsboten",
+  "documentsUrl": "https://lintek-styrdokument.gitlab-pages.liu.se/allmant/",
+  "author": {
+    "name": "Theodor Lindberg",
+    "url": "https://www.linkedin.com/in/theodor-l-00245a203"
+  },
+  "cloudflare": {
+    "workerName": "lintek-styrdokument-rag",
+    "indexName": "lintek-styrdokument"
+  },
+  "source": {
+    "type": "gitlab-appender",
+    "baseUrl": "https://lintek-styrdokument.gitlab-pages.liu.se",
+    "sections": [
+      { "id": "allmant", "label": "Allmänt" },
+      { "id": "direktiv", "label": "Direktiv" },
+      { "id": "policys", "label": "Policys" },
+      { "id": "riktlinjer", "label": "Riktlinjer" },
+      { "id": "rutiner", "label": "Rutiner" },
+      { "id": "strategier", "label": "Strategier" },
+      { "id": "verksamhetsplaner", "label": "Verksamhetsplaner" }
+    ]
+  },
+  "cleanup": {
+    "boilerplate": [
+      "Postadress LinTek",
+      "Telefon 070-269 45 85",
+      "E-post talman@lintek.liu.se",
+      "Besöksadress Tekniska högskolan",
+      "Org.nr 822001-0683",
+      "Hemsida www.lintek.liu.se"
+    ],
+    "swedishMarkers": ["kårfullmäktige", "LinTeks"]
+  }
+}

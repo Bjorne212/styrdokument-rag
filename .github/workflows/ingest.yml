@@ -1,0 +1,76 @@
+name: Indexera styrdokument
+
+# Håller Vectorize-indexet i synk med kårens dokumentarkiv.
+#
+# Jobbet är billigt när ingenting hänt: det tar ett fingeravtryck per sektion
+# (för GitLab-arkiv ett HEAD-anrop) och avslutar om alla är oförändrade. Först
+# när en sektion ändrats laddas dokumenten ner och jämförs med sha256 för att
+# se exakt vilka filer som är nya.
+#
+# Krävs:
+#   Variabel  CLOUDFLARE_ACCOUNT_ID  (Settings > Secrets and variables > Actions > Variables)
+#   Secret    CLOUDFLARE_API_TOKEN   (behörigheter: Workers AI Read, Vectorize Edit)
+#
+# Utan variabeln hoppas jobbet över, så att mallrepot och nya kopior inte får
+# ett misslyckat jobb var sjätte timme innan de är konfigurerade.
+
+on:
+  schedule:
+    # Var sjätte timme. Styrdokument ändras några gånger per år, så tätare
+    # kontroller vore slöseri, och glesare gör att en ändring kan ligga
+    # osynlig i ett dygn.
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Indexera om allt, även oförändrade dokument"
+        type: boolean
+        default: false
+
+# Behövs för att kunna spara det uppdaterade manifestet tillbaka till repot.
+permissions:
+  contents: write
+
+# Två samtidiga körningar skulle skriva över varandras manifest.
+concurrency:
+  group: ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    if: vars.CLOUDFLARE_ACCOUNT_ID != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: ingestion/package-lock.json
+
+      - name: Installera beroenden
+        working-directory: ingestion
+        run: npm ci
+
+      - name: Indexera
+        working-directory: ingestion
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node src/ingest.ts ${{ inputs.force && '--force' || '' }}
+
+      - name: Spara manifestet
+        run: |
+          # status i stället för diff: vid första körningen är manifestet en
+          # ny, ospårad fil, och den syns inte i git diff.
+          if [ -z "$(git status --porcelain ingestion/manifest.json)" ]; then
+            echo "Manifestet oförändrat, ingenting att spara."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ingestion/manifest.json
+          git commit -m "chore: uppdatera dokumentmanifest"
+          git push

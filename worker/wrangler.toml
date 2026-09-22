@@ -1,0 +1,49 @@
+# name och index_name skrivs av `node scripts/configure.mjs` utifrån
+# kar.config.json. Ändra dem där, inte här.
+name = "lintek-styrdokument-rag"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Chattsidan serveras som statiska filer av samma Worker som svarar på /api/chat.
+# Ett deploy istället för två, och inga CORS-regler att hålla reda på eftersom
+# UI och API ligger på samma origin.
+#
+# Filerna byggs från frontend/ med `npm run build:pages`: redigera inte pages/
+# för hand, innehållet skrivs över vid nästa bygge.
+[assets]
+directory = "../pages"
+# Bindningen behövs för att Workern själv ska kunna svara med appens skal på
+# sökvägar som /chat, se index.ts.
+binding = "ASSETS"
+# Gränssnittet är en enkelsidig app som sköter routingen i webbläsaren. Utan
+# det här ger en direktladdning av /chat en 404, eftersom det inte finns någon
+# fil med det namnet, nu serveras index.html och appen tar hand om resten.
+not_found_handling = "single-page-application"
+
+# Justerbara värden. Ändra här och kör `wrangler deploy`: ingen kodändring behövs.
+[vars]
+# Hur många tidigare fråga/svar-par som får följa med en följdfråga.
+# Varje par kostar input-tokens av dagskvoten, så det här är ratten som styr
+# avvägningen mellan att förstå "vad ansvarar den för?" och att få många frågor
+# per dygn. 0 stänger av följdfrågor helt.
+HISTORY_TURNS = "2"
+
+# Hur mycket av ett tidigare svar som skickas med. Svaren är ofta långa medan
+# det som behövs för sammanhang står i början.
+HISTORY_ANSWER_CHARS = "500"
+
+# Antal dokumentstycken som hämtas och skickas till modellen.
+TOP_K = "8"
+
+# Workers AI: embeddings av frågan + själva svaret.
+[ai]
+binding = "AI"
+
+# Vektordatabasen som ingestionen fyller på.
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "lintek-styrdokument"
+
+# SHARED_PASSWORD sätts som secret, aldrig här:
+#   npx wrangler secret put SHARED_PASSWORD
+# Lokalt läses den från worker/.dev.vars, som är gitignorerad.

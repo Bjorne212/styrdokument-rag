@@ -1,0 +1,19 @@
+{
+  "name": "styrdokument-rag-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Chat-API mot kårens styrdokument: lösenordskoll, sökning i Vectorize och svar via Workers AI",
+  "license": "CC-BY-4.0",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "types": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260903.1",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.0.0"
+  }
+}

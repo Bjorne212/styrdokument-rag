@@ -1,0 +1,10 @@
+{
+  "name": "styrdokument-rag",
+  "private": true,
+  "type": "module",
+  "description": "Mall för en RAG-chattbot över en studentkårs styrdokument, på Cloudflares och GitHubs gratisnivåer",
+  "license": "CC-BY-4.0",
+  "scripts": {
+    "configure": "node scripts/configure.mjs"
+  }
+}

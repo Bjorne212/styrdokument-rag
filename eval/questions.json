@@ -1,0 +1,145 @@
+{
+  "comment": "Utvärderingsuppsättning för sökningen. Varje fråga har facit i form av fraser som MÅSTE finnas i ett hämtat stycke för att sökningen ska räknas som lyckad, plus vilket dokument svaret står i. Facit är hämtat ur dokumenten, inte påhittat, och verifierat med sökning i råtexten.",
+  "questions": [
+    {
+      "id": "kf-kartyrelse-storlek",
+      "question": "Hur många ledamöter har kårstyrelsen?",
+      "kind": "specifik",
+      "expectPhrases": ["2-4 ledamöter", "två (2) till fyra (4)"],
+      "expectDocuments": ["Reglemente.pdf", "Stadga.pdf"]
+    },
+    {
+      "id": "valberedning-storlek",
+      "question": "Hur många ledamöter ska valberedningen minst bestå av?",
+      "kind": "specifik",
+      "expectPhrases": ["minst fyra (4) ledamöter"],
+      "expectDocuments": ["Stadga.pdf"]
+    },
+    {
+      "id": "vad-ar-ko",
+      "question": "Vad står KO för i LinTek?",
+      "kind": "förkortning",
+      "expectPhrases": ["Kårordförande, KO"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vad-ar-vko",
+      "question": "Vad är vKO?",
+      "kind": "förkortning",
+      "expectPhrases": ["Vice kårordförande, vKO"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vad-ar-ua",
+      "question": "Vad står UA för?",
+      "kind": "förkortning",
+      "expectPhrases": ["Utbildningsansvariga, UA"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vad-ar-na",
+      "question": "Vad betyder NA i LinTeks organisation?",
+      "kind": "förkortning",
+      "expectPhrases": ["Näringslivsansvarig, NA"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vad-ar-sa",
+      "question": "Vad står SA för?",
+      "kind": "förkortning",
+      "expectPhrases": ["Studiesocialt ansvariga, SA"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vad-ar-mf",
+      "question": "Vad betyder MF?",
+      "kind": "förkortning",
+      "expectPhrases": ["Marknadsföringsansvarig, MF"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vad-ar-pk",
+      "question": "Vem är PK och vad ansvarar den för?",
+      "kind": "förkortning",
+      "expectPhrases": ["Projektledare Kårstugan, PK"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vad-ar-larm",
+      "question": "Vad är LARM?",
+      "kind": "förkortning",
+      "expectPhrases": ["arbetsmarknadsdagar"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf", "Direktiv för LARM.pdf"]
+    },
+    {
+      "id": "vko-ansvar",
+      "question": "Vad ansvarar vice kårordförande för?",
+      "kind": "specifik",
+      "expectPhrases": ["ekonomi, avtal och arkivering"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "vko-arvodering",
+      "question": "Är vice kårordförande arvoderad och under vilken period?",
+      "kind": "specifik",
+      "expectPhrases": ["heltidsarvoderad under perioden juni"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "medlemsavgift-utebliven",
+      "question": "Vad händer om en medlem inte betalar medlemsavgiften?",
+      "kind": "specifik",
+      "expectPhrases": ["upphör automatiskt att vara medlem"],
+      "expectDocuments": ["Stadga.pdf"]
+    },
+    {
+      "id": "medlemsavgift-beslut",
+      "question": "Vem fastställer medlemsavgiften?",
+      "kind": "specifik",
+      "expectPhrases": ["fastställa medlemsavgift", "medlemsavgift fastställd av kårfullmäktige"],
+      "expectDocuments": ["Stadga.pdf"]
+    },
+    {
+      "id": "internrevisor",
+      "question": "Vad är internrevisorns uppgift?",
+      "kind": "specifik",
+      "expectPhrases": ["granska LinTeks verksamhet"],
+      "expectDocuments": ["Reglemente.pdf"]
+    },
+    {
+      "id": "valberedning-uppgift",
+      "question": "Vad gör valberedningen?",
+      "kind": "generell",
+      "expectPhrases": ["bereda val"],
+      "expectDocuments": ["Reglemente.pdf", "Stadga.pdf"]
+    },
+    {
+      "id": "alkohol-mottagning",
+      "question": "Vilka regler gäller för alkohol under mottagningen?",
+      "kind": "generell",
+      "expectPhrases": ["Alkohol och andra droger", "alkohol"],
+      "expectDocuments": ["Mottagningspolicy-2022.pdf", "Mottagningspolicy-2020.pdf"]
+    },
+    {
+      "id": "mattehjalpen-ordforande",
+      "question": "Vem ansvarar för att rekrytera ordförande för Mattehjälpen?",
+      "kind": "specifik",
+      "expectPhrases": ["ordförande av Mattehjälpen rekryteras"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "pressmeddelanden",
+      "question": "Vem ansvarar för LinTeks pressmeddelanden?",
+      "kind": "specifik",
+      "expectPhrases": ["ansvarig för LinTeks pressmeddelanden"],
+      "expectDocuments": ["Arbetsbeskrivningar.pdf"]
+    },
+    {
+      "id": "historik-placeringar",
+      "question": "När beslutades ändringen om placeringar i reglementet?",
+      "kind": "historik",
+      "expectPhrases": ["Placeringar"],
+      "expectDocuments": ["Reglemente.pdf"]
+    }
+  ]
+}

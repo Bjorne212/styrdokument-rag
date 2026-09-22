@@ -1,0 +1,33 @@
+{
+  "id": "exempelkaren",
+  "name": "Exempelkåren",
+  "nameGenitive": "Exempelkårens",
+  "description": "studentkåren vid Exempeluniversitetet",
+  "botName": "Styrdokumentsboten",
+  "documentsUrl": "https://exempelkaren.se/styrdokument",
+  "author": {
+    "name": "Ditt namn",
+    "url": "https://exempelkaren.se"
+  },
+  "cloudflare": {
+    "workerName": "exempelkaren-styrdokument-rag",
+    "indexName": "exempelkaren-styrdokument"
+  },
+  "source": {
+    "type": "pdf-list",
+    "sections": [
+      {
+        "id": "grund",
+        "label": "Grundläggande dokument",
+        "documents": [
+          { "title": "Stadga", "url": "https://exempelkaren.se/filer/stadga.pdf" },
+          { "title": "Reglemente", "url": "https://exempelkaren.se/filer/reglemente.pdf" }
+        ]
+      }
+    ]
+  },
+  "cleanup": {
+    "boilerplate": [],
+    "swedishMarkers": ["kårfullmäktige"]
+  }
+}

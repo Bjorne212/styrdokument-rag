@@ -1,0 +1,23 @@
+title: Styrdokument-RAG
+description: En chattbot som svarar på frågor om en studentkårs styrdokument, med källhänvisningar. Mall och teknisk dokumentation.
+lang: sv
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+repository_url: https://github.com/Bjorne212/styrdokument-rag
+
+nav:
+  - title: Översikt
+    url: /
+  - title: Kom igång för en ny kår
+    url: /kom-igang/
+  - title: Konfiguration
+    url: /konfiguration/
+  - title: Arkitektur
+    url: /arkitektur/
+  - title: Utvärdering
+    url: /utvardering/
+  - title: Drift och gränser
+    url: /drift/

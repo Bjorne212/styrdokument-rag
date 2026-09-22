@@ -1,0 +1,19 @@
+{
+  "name": "styrdokument-rag-local",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Verktyg för lokal utveckling och utvärdering, kör mot Ollama i stället för Cloudflare, alltså gratis",
+  "license": "CC-BY-4.0",
+  "scripts": {
+    "index": "node src/localindex.ts",
+    "index:rebuild": "node src/localindex.ts --rebuild",
+    "eval": "node src/evaluate.ts",
+    "chat": "node src/devserver.ts",
+    "experiments": "node src/experiments.ts",
+    "tune": "node src/tune.ts",
+    "duplicates": "node src/duplicates.ts --threshold 0.75",
+    "glossary": "node src/glossary-build.ts",
+    "glossary:compare": "node src/compare-glossary.ts"
+  }
+}

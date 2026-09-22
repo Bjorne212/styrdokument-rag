@@ -1,0 +1,67 @@
+name: Deploya chatten
+
+# Bygger gränssnittet och deployar Workern till Cloudflare.
+#
+# Körs vid push till main när något som påverkar chatten ändrats, och för
+# hand under Actions > Deploya chatten > Run workflow.
+#
+# Krävs:
+#   Variabel  CLOUDFLARE_ACCOUNT_ID
+#   Secret    CLOUDFLARE_API_TOKEN   (behörigheter: Workers Scripts Edit,
+#                                     Workers AI Read, Vectorize Edit)
+#   Secret    SHARED_PASSWORD        (valfri: sätts på Workern vid varje deploy.
+#                                     Utan den, sätt lösenordet en gång med
+#                                     `npx wrangler secret put SHARED_PASSWORD`)
+#
+# Utan variabeln hoppas jobbet över, se ingest.yml.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "kar.config.json"
+      - "shared/**"
+      - "frontend/**"
+      - "worker/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: vars.CLOUDFLARE_ACCOUNT_ID != ''
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Kontrollera kar.config.json
+        run: node scripts/configure.mjs
+
+      - name: Bygg gränssnittet
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build:pages
+
+      - name: Deploya Workern
+        working-directory: worker
+        run: |
+          npm ci
+          npx wrangler deploy
+
+      - name: Sätt lösenordet
+        env:
+          SHARED_PASSWORD: ${{ secrets.SHARED_PASSWORD }}
+        if: env.SHARED_PASSWORD != ''
+        working-directory: worker
+        run: echo "$SHARED_PASSWORD" | npx wrangler secret put SHARED_PASSWORD

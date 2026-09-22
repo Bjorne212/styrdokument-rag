@@ -1,0 +1,23 @@
+{
+  "name": "styrdokument-rag-ingestion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Hämtar kårens styrdokument, extraherar text och skriver embeddings till Cloudflare Vectorize",
+  "license": "CC-BY-4.0",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "ingest": "node --env-file=.env src/ingest.ts",
+    "ingest:force": "node --env-file=.env src/ingest.ts --force",
+    "ingest:dry": "node src/ingest.ts --dry-run",
+    "prune": "node --env-file=.env src/ingest.ts --prune",
+    "search": "node --env-file=.env src/search.ts",
+    "scrape": "node src/scrape.ts",
+    "scrape:verify": "node src/scrape.ts --verify"
+  },
+  "dependencies": {
+    "unpdf": "^1.8.1"
+  }
+}

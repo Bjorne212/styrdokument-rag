@@ -1,0 +1,228 @@
+/*
+ * D-DIN, lokalt serverat.
+ *
+ * Typsnittet hämtades tidigare från fonts.cdnfonts.com, vilket innebar att
+ * varje besökares webbläsare kontaktade en tredje part och lämnade ifrån sig
+ * IP-adress och referrer. Det motsäger löftet om att ingenting registreras, så
+ * filerna ligger nu i public/fonts/ och serveras från samma origin som allt
+ * annat. D-DIN är licensierat under SIL OFL och får distribueras vidare.
+ */
+@font-face {
+  font-family: "D-DIN";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("D-DIN"), url("/fonts/D-DIN.woff") format("woff");
+}
+@font-face {
+  font-family: "D-DIN";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local("D-DIN Italic"), url("/fonts/D-DIN-Italic.woff") format("woff");
+}
+@font-face {
+  font-family: "D-DIN";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("D-DIN Bold"), url("/fonts/D-DIN-Bold.woff") format("woff");
+}
+@font-face {
+  font-family: "D-DIN Condensed";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("D-DIN Condensed"), url("/fonts/D-DINCondensed.woff") format("woff");
+}
+
+@import "tailwindcss" source(none);
+@source "../src";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --font-sans: "D-DIN", "DIN Next", "DIN", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "D-DIN Condensed", "D-DIN", "DIN", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.75rem;
+  /* LinTek: magenta #E1007A, ljusrosa #D786B3, svart #000000, NCS S 3000-N grå */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0 0 0);
+  /* Kårens accentfärg: knappar och länkar. Byt till kårens egen. */
+  --primary: oklch(0.5817 0.2404 1.35);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9508 0.0212 348.5);
+  --secondary-foreground: oklch(0.2 0 0);
+  --muted: oklch(0.968 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.7433 0.115 348.9);
+  --accent-foreground: oklch(0 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.8934 0 0);
+  --input: oklch(0.8934 0 0);
+  --ring: oklch(0.5817 0.2404 1.35);
+  --chart-1: oklch(0.5817 0.2404 1.35);
+  --chart-2: oklch(0.7433 0.115 348.9);
+  --chart-3: oklch(0.55 0 0);
+  --chart-4: oklch(0.3 0 0);
+  --chart-5: oklch(0.8 0 0);
+  --sidebar: oklch(0.984 0 0);
+  --sidebar-foreground: oklch(0 0 0);
+  --sidebar-primary: oklch(0.5817 0.2404 1.35);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9508 0.0212 348.5);
+  --sidebar-accent-foreground: oklch(0 0 0);
+  --sidebar-border: oklch(0.8934 0 0);
+  --sidebar-ring: oklch(0.5817 0.2404 1.35);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-weight: 400;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+}
+
+/* Startsidans mörka aurora-hero (LinTek-magenta) */
+:root {
+  --hero-bg: oklch(0.18 0.008 320);
+  --hero-fg: oklch(0.99 0 0);
+  /* Glöden bakom rubriken på startsidan, i kårens färger. */
+  --hero-glow-1: oklch(0.62 0.24 1.35);
+  --hero-glow-2: oklch(0.74 0.115 348.9);
+  --hero-surface: oklch(0.24 0.012 320);
+  --hero-border: oklch(1 0 0 / 14%);
+  --hero-muted: oklch(1 0 0 / 62%);
+}
+
+@theme inline {
+  --color-hero-bg: var(--hero-bg);
+  --color-hero-fg: var(--hero-fg);
+  --color-hero-surface: var(--hero-surface);
+  --color-hero-border: var(--hero-border);
+  --color-hero-muted: var(--hero-muted);
+}
+
+@utility hero-aurora {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 50% 82%, var(--hero-glow-1) 0%, transparent 72%),
+    radial-gradient(45% 42% at 20% 84%, var(--hero-glow-2) 0%, transparent 70%),
+    radial-gradient(40% 38% at 82% 84%, var(--hero-glow-2) 0%, transparent 68%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 100%);
+  filter: blur(14px);
+  opacity: 0.85;
+}

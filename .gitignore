@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Byggartefakter
+dist/
+.wrangler/
+.tanstack/
+*.local
+
+# pages/ är BYGGD utdata från frontend/ (`npm run build:pages`). Den byggs
+# av deploy-jobbet i GitHub Actions och lokalt vid behov, och checkas inte in:
+# innehållet beror på kar.config.json och skulle annars bli inaktuellt.
+pages/
+
+# Jekyll-bygge av dokumentationssajten
+docs/_site/
+docs/.jekyll-cache/
+
+# Nedladdade PDF:er och mellanliggande data (hämtas alltid om från källan)
+ingestion/cache/
+ingestion/out/
+
+# Hemligheter, ska ALDRIG committas
+.dev.vars
+.env
+.env.*
+
+# macOS / iCloud / Obsidian
+.DS_Store
+.obsidian/
+*.icloud

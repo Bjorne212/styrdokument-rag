@@ -1,0 +1,7 @@
+# Internt verktyg för LinTeks medlemmar. Ska varken crawlas eller indexeras.
+#
+# Innehållet ligger ändå bakom ett lösenord, så en sökrobot ser bara ett tomt
+# skal. Det här stoppar den från att hämta sidan över huvud taget.
+
+User-agent: *
+Disallow: /
