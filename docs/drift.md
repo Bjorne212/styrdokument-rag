@@ -40,7 +40,7 @@ Secrets och variabler finns under *Settings → Secrets and variables → Action
 
 **Jobbet håller sig självt vid liv.** GitHub stänger av schemalagda jobb i publika repon efter 60 dagar utan aktivitet. Indexeringen skriver en ny tidsstämpel i `manifest.json` och committar den vid varje körning, så repot räknas som aktivt så länge jobbet går. Har jobbet ändå stängts av syns en gul banner under *Actions*; klicka **Enable workflow**.
 
-**Kvoten syns i Cloudflare.** Under *Workers AI* i Cloudflare-dashboarden visas förbrukade neurons per dag. Ligger förbrukningen nära 10 000 räcker kvoten inte till alla som vill fråga, se [Kostnader](#kostnader).
+**Kvoten syns i Cloudflare.** Under *Workers AI* i Cloudflare-dashboarden visas förbrukade neurons per dag. Ligger förbrukningen nära 10 000 räcker kvoten inte till alla som vill fråga, se [Kostnader](../kostnader/).
 
 ## Överlämning mellan styrelser {#overlamning}
 
@@ -54,20 +54,7 @@ Boten överlever bara om någon i nästa styrelse vet att den finns. Det vanliga
 
 ## Kostnader {#kostnader}
 
-Ingenting, så länge användningen håller sig inom gratisnivåerna. Varje kår har sitt eget Cloudflare-konto och därmed sin egen kvot.
-
-| Gräns | Vad den betyder |
-|---|---|
-| 10 000 neurons per dygn i Workers AI | Ungefär 80 till 90 frågor per dygn, delat av alla användare |
-| 5 miljoner lagrade vektordimensioner i Vectorize | Omkring 4 800 stycken. LinTeks arkiv, 60 dokument och 930 sidor, använder 914. |
-| 100 000 anrop per dygn till Workers | Räcker med mycket stor marginal |
-| 2 000 minuter per månad i GitHub Actions (privata repon) | Ett indexeringsjobb utan ändringar tar under en minut. Publika repon har ingen gräns. |
-
-Att indexera om ett helt arkiv av LinTeks storlek kostar omkring 300 neurons, så det schemalagda jobbet hotar aldrig kvoten. Det är frågorna som förbrukar den.
-
-Kvoten nollställs vid midnatt UTC. När den tar slut går Workern över till en mindre reservmodell. Tar även den slut får användaren ett felmeddelande som förklarar varför.
-
-**Om kvoten inte räcker:** sänk `TOP_K` eller `HISTORY_TURNS` i `worker/wrangler.toml` (fler frågor per dygn, men sämre svar), eller byt Cloudflare-kontot till Workers Paid för 5 USD i månaden. Förbrukning över gratisnivån kostar då 0,011 USD per 1 000 neurons, ungefär en krona per hundra frågor.
+Ingenting för en vanlig kår. Gränsen som styr är 10 000 neurons per dygn i Workers AI, vilket räcker till ungefär 80 frågor. Indexeringen kostar nästan ingenting. Hur kostnaden delas upp, vad som ingår gratis och vad som kostar vid större användning står på sidan [Kostnader](../kostnader/).
 
 ## Integritet {#integritet}
 
@@ -100,7 +87,7 @@ Sajten stängs ute från sökmotorer med `robots.txt`, huvudet `X-Robots-Tag` oc
 | `Indexet "..." har undefined dimensioner` | Indexet finns inte eller heter något annat än `cloudflare.indexName`. Skapa det med `npx wrangler vectorize create <namn> --dimensions=1024 --metric=cosine`. |
 | `Authentication error` i ett jobb | API-token har gått ut, återkallats eller saknar behörighet. Skapa en ny, se [Vad som finns och var](#resurser). |
 | Chatten svarar "Fel lösenord" för alla | `SHARED_PASSWORD` är inte satt på Workern. Kör **Deploya chatten** eller `wrangler secret put`. |
-| Chatten svarar att reservmodellen används | Dagskvoten är nästan slut. Se [Kostnader](#kostnader). |
+| Chatten svarar att reservmodellen används, eller att gratiskvoten är slut | Dagskvoten är nästan eller helt förbrukad. Se [Kostnader](../kostnader/). |
 | Boten hittar fel stycken | Titta på träffarna med `npm run search -- "din fråga"` i `ingestion/`. Skriv en utvärderingsfråga för fallet och mät, se [Utvärdering](../utvardering/). |
 
 ## Köra indexeringen för hand {#for-hand}

@@ -76,8 +76,7 @@ p { margin: 0 0 1.1rem; }
 /* Navigering */
 .nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
 .nav-inner { display: flex; align-items: center; gap: 2rem; height: 64px; }
-.logo { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 600; text-decoration: none; letter-spacing: -0.01em; }
-.logo-mark { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: var(--fg); color: var(--bg); font-size: 0.9rem; }
+.logo { font: 400 1.25rem/1 var(--sans); letter-spacing: -0.02em; text-decoration: none; }
 .nav-links { display: none; gap: 1.8rem; font-size: 0.95rem; }
 .nav-links a { color: var(--muted); text-decoration: none; }
 .nav-links a:hover { color: var(--fg); }

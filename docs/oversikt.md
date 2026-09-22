@@ -68,7 +68,8 @@ Ingenting sparas. Inga konton, ingen chatthistorik på servern, inga IP-adresser
 | Sida | Innehåll |
 |---|---|
 | [Hålla dokumenten korrekta](../uppdatera/) | Hur nya och ändrade PDF:er når boten, och hur man undviker att den citerar gamla versioner |
-| [Drift](../drift/) | Rutiner, övervakning, överlämning mellan styrelser, kvoter och felsökning |
+| [Drift](../drift/) | Rutiner, övervakning, överlämning mellan styrelser och felsökning |
+| [Kostnader](../kostnader/) | Vad som ingår gratis, vad en fråga kostar och vad som händer vid större användning |
 | [Konfiguration](../konfiguration/) | Alla fält i `kar.config.json`, källtyper, färger och logga |
 | [Arkitektur](../arkitektur/) | Hur koden är uppdelad, fil för fil, och varför |
 | [Utvärdering](../utvardering/) | Hur man mäter att sökningen hittar rätt |
