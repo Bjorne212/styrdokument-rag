@@ -1,25 +1,16 @@
 :root {
-  --bg: #ffffff;
-  --bg-soft: #faf9f7;
-  --fg: #191919;
-  --muted: #6b6a67;
-  --border: #eceae6;
-  --accent: #e1007a;
+  /* Sidan är alltid mörk. */
+  --bg: #111110;
+  --bg-soft: #181817;
+  --fg: #f1f0ed;
+  --muted: #a09e99;
+  --border: #2a2927;
+  --accent: #7aa4d6; /* TIOM-blå, ljusare nyans för att synas mot mörk bakgrund */
   --sans: "Instrument Sans", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --wrap: 1080px;
   --r: 360px;
   --doc-w: 100px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #111110;
-    --bg-soft: #181817;
-    --fg: #f1f0ed;
-    --muted: #a09e99;
-    --border: #2a2927;
-  }
 }
 
 * { box-sizing: border-box; }

@@ -1,27 +1,18 @@
 :root {
-  --bg: #fbfaf8;
-  --surface: #f2f0ec;
-  --fg: #1c1b1a;
-  --muted: #5f5b56;
-  --border: #e2ded7;
-  --accent: #b0105f;
-  --accent-soft: #fbe7f1;
-  --code-bg: #f2f0ec;
+  /* Sidan är alltid mörk. */
+  --bg: #151413;
+  --surface: #1e1d1b;
+  --fg: #ecebe8;
+  --muted: #a39e97;
+  --border: #2f2d2a;
+  /* TIOM-blå. Originalet (#3a6ea5) är för mörkt för text mot mörk
+     bakgrund, så länkar och markeringar använder en ljusare nyans. */
+  --accent: #3a6ea5;
+  --accent-text: #86acd6;
+  --accent-soft: #1d2835;
+  --code-bg: #1e1d1b;
   --sidebar-w: 260px;
   --measure: 46rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #151413;
-    --surface: #1e1d1b;
-    --fg: #ecebe8;
-    --muted: #a39e97;
-    --border: #2f2d2a;
-    --accent: #f0629f;
-    --accent-soft: #3a1a2a;
-    --code-bg: #1e1d1b;
-  }
 }
 
 * { box-sizing: border-box; }
@@ -34,10 +25,11 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 17px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font: 17px/1.65 "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--accent); text-underline-offset: 3px; }
+a { color: var(--accent-text); text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
 
 .topbar { display: none; }
@@ -84,9 +76,9 @@ a:hover { text-decoration-thickness: 2px; }
 .sidebar li a:hover { color: var(--fg); background: var(--border); }
 
 .sidebar li a[aria-current="page"] {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--accent-soft);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .repo-link { margin-top: auto; font-size: 0.9rem; }
@@ -98,9 +90,9 @@ a:hover { text-decoration-thickness: 2px; }
 
 article { max-width: var(--measure); }
 
-h1, h2, h3 { line-height: 1.25; letter-spacing: -0.015em; }
-h1 { font-size: 2.2rem; margin: 0 0 1rem; }
-h2 { font-size: 1.45rem; margin: 2.6rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+h1, h2, h3 { line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; }
+h1 { font-size: 2.4rem; font-weight: 400; margin: 0 0 1rem; }
+h2 { font-size: 1.55rem; font-weight: 400; margin: 2.6rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--border); }
 h3 { font-size: 1.12rem; margin: 1.8rem 0 0.5rem; }
 
 p, ul, ol { margin: 0 0 1rem; }
@@ -109,7 +101,7 @@ li + li { margin-top: 0.25rem; }
 .lead { font-size: 1.15rem; color: var(--muted); }
 
 code {
-  font: 0.86em/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font: 0.84em/1.5 "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -166,9 +158,9 @@ blockquote p:last-child { margin-bottom: 0; }
 
 /* Rouge-färger, dämpade så att de fungerar i båda lägena */
 .highlight .c, .highlight .c1, .highlight .cm { color: var(--muted); font-style: italic; }
-.highlight .s, .highlight .s1, .highlight .s2 { color: #2f8f5b; }
-.highlight .k, .highlight .kd, .highlight .nt { color: var(--accent); }
-.highlight .mi, .highlight .kc { color: #b36b00; }
+.highlight .s, .highlight .s1, .highlight .s2 { color: #6cc193; }
+.highlight .k, .highlight .kd, .highlight .nt { color: var(--accent-text); }
+.highlight .mi, .highlight .kc { color: #e0a562; }
 
 @media (max-width: 860px) {
   .layout { grid-template-columns: minmax(0, 1fr); }
@@ -186,13 +178,34 @@ blockquote p:last-child { margin-bottom: 0; }
     border-bottom: 1px solid var(--border);
   }
 
+  /* Hamburgerikon som blir ett kryss när menyn är öppen. */
   .menu-button {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    width: 34px;
+    height: 34px;
     cursor: pointer;
-    font-size: 0.9rem;
-    padding: 0.3rem 0.7rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
   }
+
+  .menu-button:hover { background: var(--border); }
+
+  .menu-button span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    border-radius: 1px;
+    background: var(--fg);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .menu-toggle:checked ~ .topbar .menu-button span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .menu-toggle:checked ~ .topbar .menu-button span:nth-child(2) { opacity: 0; }
+  .menu-toggle:checked ~ .topbar .menu-button span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  .menu-toggle:focus-visible ~ .topbar .menu-button { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 
   /* Menyn fälls ut direkt under headern, var på sidan man än är. */
   .sidebar {
