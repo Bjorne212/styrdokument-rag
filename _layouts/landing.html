@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+{%- assign lang = page.lang | default: site.lang -%}
+<html lang="{{ lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,16 +10,32 @@
   <meta property="og:description" content="{{ page.description | default: site.description }}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{{ site.title }}">
-  <meta property="og:locale" content="sv_SE">
+  <meta property="og:locale" content="{% if lang == 'en' %}en_GB{% else %}sv_SE{% endif %}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <meta property="og:image" content="{{ '/assets/og.png' | absolute_url }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Styrdokumentsboten: Fråga kårens styrdokument. Ett svar med källan Stadga.pdf, omgivet av styrdokument.">
+  <meta property="og:image:alt" content="{% if lang == 'en' %}Styrdokumentsboten: ask your student union's governing documents. An answer citing Stadga.pdf, surrounded by governing documents.{% else %}Styrdokumentsboten: Fråga kårens styrdokument. Ett svar med källan Stadga.pdf, omgivet av styrdokument.{% endif %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page.title }}">
   <meta name="twitter:description" content="{{ page.description | default: site.description }}">
   <meta name="twitter:image" content="{{ '/assets/og.png' | absolute_url }}">
+  <link rel="alternate" hreflang="sv" href="{{ '/' | absolute_url }}">
+  <link rel="alternate" hreflang="en" href="{{ '/en/' | absolute_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ '/en/' | absolute_url }}">
+  <script>
+    // Väljer språk utifrån webbläsaren, om besökaren inte själv valt ett i sidfoten.
+    (function () {
+      var current = "{{ lang }}";
+      var chosen = null;
+      try { chosen = localStorage.getItem("lang"); } catch (e) {}
+      var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+      var wanted = chosen || (langs.some(function (l) { return /^sv\b/i.test(l); }) ? "sv" : "en");
+      if (wanted !== current) {
+        location.replace((wanted === "sv" ? "{{ '/' | relative_url }}" : "{{ '/en/' | relative_url }}") + location.hash);
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -26,5 +43,12 @@
 </head>
 <body>
   {{ content }}
+  <script>
+    document.querySelectorAll("[data-lang]").forEach(function (link) {
+      link.addEventListener("click", function () {
+        try { localStorage.setItem("lang", link.dataset.lang); } catch (e) {}
+      });
+    });
+  </script>
 </body>
 </html>

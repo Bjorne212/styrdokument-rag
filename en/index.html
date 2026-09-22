@@ -1,0 +1,128 @@
+---
+layout: landing
+permalink: /en/
+title: Styrdokumentsboten – ask your student union's governing documents
+lang: en
+description: A chatbot that answers questions about a student union's statutes, regulations and policies, with the source next to every answer.
+---
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="{{ '/' | relative_url }}">Styrdokumentsboten</a>
+    <nav class="nav-links" aria-label="Main menu">
+      <a href="#screenshots">Screenshots</a>
+      <a href="{{ '/oversikt/' | relative_url }}" hreflang="sv">Documentation</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn-dark btn-small" href="{{ site.repository_url }}">GitHub</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="orbit" aria-hidden="true">
+      <div class="ring">
+        <div class="doc" style="--a: 0deg"><div class="spin"><div class="paper"><b>Statutes</b><i></i><i></i><i></i></div></div></div>
+        <div class="doc" style="--a: 45deg"><div class="spin"><div class="paper"><b>Regulations</b><i></i><i></i><i></i></div></div></div>
+        <div class="doc" style="--a: 90deg"><div class="spin"><div class="paper"><b>Policy</b><i></i><i></i><i></i></div></div></div>
+        <div class="doc" style="--a: 135deg"><div class="spin"><div class="paper"><b>Guidelines</b><i></i><i></i><i></i></div></div></div>
+        <div class="doc" style="--a: 180deg"><div class="spin"><div class="paper"><b>Vision</b><i></i><i></i><i></i></div></div></div>
+        <div class="doc" style="--a: 225deg"><div class="spin"><div class="paper"><b>Procedures</b><i></i><i></i><i></i></div></div></div>
+        <div class="doc" style="--a: 270deg"><div class="spin"><div class="paper"><b>Directives</b><i></i><i></i><i></i></div></div></div>
+        <div class="doc" style="--a: 315deg"><div class="spin"><div class="paper"><b>Strategy</b><i></i><i></i><i></i></div></div></div>
+      </div>
+    </div>
+
+    <div class="hero-copy">
+      <h1>Ask your union’s governing documents</h1>
+      <p class="lead">A chatbot that reads your statutes, regulations and policies and answers questions, with the document and section next to every answer. If it is not in the documents, it says so.</p>
+      <div class="actions">
+        <a class="btn btn-dark" href="{{ '/oversikt/' | relative_url }}" hreflang="sv">Read the documentation (Swedish) <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="shots" id="screenshots">
+    <div class="wrap">
+      <p class="eyebrow">Screenshots</p>
+      <h2>Answers with the source alongside</h2>
+
+      <figure class="shot shot-wide">
+        <img src="{{ '/assets/img/svar.jpg' | relative_url }}" alt="The chat answers that the nomination committee must have at least four members, with Stadga.pdf and the section listed as sources above the answer." width="1600" height="1000" loading="lazy">
+        <figcaption>Sources come first, with document, category and section. The answer cites the same place.</figcaption>
+      </figure>
+
+      <div class="shot-row">
+        <figure class="shot">
+          <img src="{{ '/assets/img/arlig.jpg' | relative_url }}" alt="Asked what a beer costs in the student pub, the chat answers that the governing documents do not say." width="1600" height="1000" loading="lazy">
+          <figcaption>When the answer is not in the documents, the bot says so instead of guessing.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="{{ '/assets/img/start.jpg' | relative_url }}" alt="The start page with the heading What do you want to know about the governing documents, and a question box." width="1600" height="1000" loading="lazy">
+          <figcaption>Your union’s own logo and colours. No accounts, just a shared password.</figcaption>
+        </figure>
+      </div>
+
+      <figure class="shot shot-phone">
+        <img src="{{ '/assets/img/mobil.jpg' | relative_url }}" alt="The chat on a phone, answering what the nomination committee does, with three sources." width="780" height="1688" loading="lazy">
+        <figcaption>Works just as well on a phone, on the way to a meeting.</figcaption>
+      </figure>
+      <p class="note">Screenshots taken against LinTek’s 60 governing documents. The interface is in Swedish, but questions can be asked in English.</p>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="wrap narrow">
+      <p class="eyebrow">What is it?</p>
+      <h2>Less time in PDFs, more time for the union</h2>
+      <p>The board, presidium and leadership constantly need to know what the governing documents say: before a decision, when writing a motion, or when someone asks who is responsible for what. But the documents are written to be correct, not to be easy to search. LinTek’s archive is 99 PDFs and more than 900 pages, and the answer might be in the statutes, the regulations or a policy from several years ago.</p>
+      <p>Styrdokumentsboten does that searching for you. It retrieves the passages that best match the question and has a language model write an answer from them, and only them. Every answer shows which document and section it is based on, so it can be checked in seconds instead of half an hour of scrolling.</p>
+      <p>The bot reads the documents where the union already publishes them and keeps itself up to date. It stores no questions, has no accounts and runs entirely within the free tiers of GitHub and Cloudflare.</p>
+      <a class="btn btn-dark" href="{{ '/oversikt/' | relative_url }}" hreflang="sv">To the documentation (Swedish) <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="star">
+    <div class="wrap narrow center">
+      <p class="eyebrow">Open source</p>
+      <h2>The code is on GitHub</h2>
+      <p>If you like the idea, please give it a star on GitHub. It helps other student unions find it.</p>
+      <a class="btn btn-light" href="{{ site.repository_url }}"><span aria-hidden="true">★</span> Star the project</a>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap narrow center">
+      <p class="eyebrow">For your union</p>
+      <h2>Want it for your union?</h2>
+      <p>The bot can be set up for any student union that publishes its governing documents as PDFs. Email me and I will help you get started.</p>
+      <a class="btn btn-dark" href="mailto:theodor@tiom.nu?subject=Styrdokumentsboten%20for%20our%20union">Email theodor@tiom.nu</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-top">
+    <a class="logo" href="{{ '/' | relative_url }}">Styrdokumentsboten</a>
+    <div class="footer-cols">
+      <div>
+        <h3>The project</h3>
+        <a href="{{ '/oversikt/' | relative_url }}" hreflang="sv">Documentation (Swedish)</a>
+        <a href="{{ '/uppdatera/' | relative_url }}" hreflang="sv">Keeping documents correct</a>
+        <a href="{{ '/drift/' | relative_url }}" hreflang="sv">Operations</a>
+        <a href="{{ '/kostnader/' | relative_url }}" hreflang="sv">Costs</a>
+        <a href="{{ site.repository_url }}">GitHub repository</a>
+      </div>
+      <div>
+        <h3>More from me</h3>
+        <a href="https://tiom.nu/">TIOM</a>
+        <a href="https://untangle.tiom.nu/">UnTangle</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>CC BY 4.0. Free to use with attribution.</span>
+    <span class="lang-switch"><a href="{{ '/' | relative_url }}" data-lang="sv" hreflang="sv" lang="sv">Svenska</a> · <a href="{{ '/en/' | relative_url }}" data-lang="en" aria-current="true">English</a></span>
+    <span>Built by Theodor Lindberg</span>
+  </div>
+</footer>

@@ -183,6 +183,12 @@ p { margin: 0 0 1.1rem; }
 
 .contact p { color: var(--muted); font-size: 1.05rem; margin-bottom: 1.8rem; }
 
+.star { padding: 48px 0; border-top: 1px solid var(--border); }
+.star .eyebrow { margin-bottom: 0.7rem; }
+.star h2 { font-size: 1.4rem; margin-bottom: 0.6rem; }
+.star p { color: var(--muted); font-size: 0.97rem; margin-bottom: 1.2rem; }
+.star .btn { padding: 0.6rem 1.1rem; font-size: 0.9rem; }
+
 /* Sidfot */
 .footer { border-top: 1px solid var(--border); font-size: 0.92rem; }
 .footer-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; padding-top: 48px; padding-bottom: 40px; }
@@ -194,6 +200,7 @@ p { margin: 0 0 1.1rem; }
 .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; padding-top: 20px; padding-bottom: 28px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.82rem; }
 .footer-bottom a { text-decoration: none; }
 .footer-bottom a:hover { color: var(--fg); }
+.lang-switch a[aria-current] { color: var(--fg); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

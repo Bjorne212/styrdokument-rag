@@ -1,6 +1,7 @@
 ---
 layout: landing
 title: Styrdokumentsboten – fråga kårens styrdokument
+lang: sv
 description: En chattbot som svarar på frågor om en studentkårs stadga, reglemente och policyer, med källan bredvid varje svar.
 ---
 
@@ -36,7 +37,6 @@ description: En chattbot som svarar på frågor om en studentkårs stadga, regle
       <p class="lead">En chattbot som läser stadga, reglemente och policyer och svarar på frågor, med dokument och avsnitt bredvid varje svar. Står det inte i dokumenten säger den det.</p>
       <div class="actions">
         <a class="btn btn-dark" href="{{ '/oversikt/' | relative_url }}">Läs dokumentationen <span aria-hidden="true">→</span></a>
-        <a class="btn btn-light" href="#kontakt">Till er kår</a>
       </div>
     </div>
   </section>
@@ -73,20 +73,29 @@ description: En chattbot som svarar på frågor om en studentkårs stadga, regle
   <section class="about">
     <div class="wrap narrow">
       <p class="eyebrow">Vad är det?</p>
-      <h2>Ett sätt att hitta rätt i hundratals sidor</h2>
-      <p>En kårs styrdokument är skrivna för att vara korrekta, inte för att vara lätta att söka i. LinTeks arkiv är 99 PDF:er och över 900 sidor. Frågor om hur många ledamöter styrelsen har eller vem som fastställer medlemsavgiften hamnar därför hos styrelsen, i en gruppchatt eller i ett mejl till talpersonen.</p>
-      <p>Styrdokumentsboten hämtar de stycken i dokumenten som bäst matchar frågan och låter en språkmodell formulera ett svar utifrån dem, och bara dem. Varje svar visar vilket dokument och vilket avsnitt det bygger på, så att vem som helst kan kontrollera det på några sekunder.</p>
+      <h2>Mindre tid i PDF:er, mer tid för kåren</h2>
+      <p>Styrelse, presidium och ledning behöver ständigt veta vad styrdokumenten säger: inför ett beslut, när en motion ska skrivas eller när någon undrar vem som ansvarar för vad. Men dokumenten är skrivna för att vara korrekta, inte för att vara lätta att söka i. LinTeks arkiv är 99 PDF:er och över 900 sidor, och svaret kan stå i stadgan, reglementet eller en policy från för flera år sedan.</p>
+      <p>Styrdokumentsboten gör det letandet åt er. Den hämtar de stycken i dokumenten som bäst matchar frågan och låter en språkmodell formulera ett svar utifrån dem, och bara dem. Varje svar visar vilket dokument och vilket avsnitt det bygger på, så att det går att kontrollera på några sekunder i stället för att bläddra i en halvtimme.</p>
       <p>Boten läser dokumenten där kåren redan publicerar dem och håller sig uppdaterad själv. Den sparar inga frågor, har inga konton och ryms helt i GitHubs och Cloudflares gratisnivåer.</p>
       <a class="btn btn-dark" href="{{ '/oversikt/' | relative_url }}">Till dokumentationen <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
+  <section class="star">
+    <div class="wrap narrow center">
+      <p class="eyebrow">Öppen källkod</p>
+      <h2>Koden finns på GitHub</h2>
+      <p>Gillar du idén, ge det gärna en stjärna på GitHub. Det gör det lättare för andra kårer att hitta det.</p>
+      <a class="btn btn-light" href="{{ site.repository_url }}"><span aria-hidden="true">★</span> Ge projektet en stjärna</a>
+    </div>
+  </section>
+
   <section class="contact" id="kontakt">
     <div class="wrap narrow center">
-      <p class="eyebrow">För din kår</p>
+      <p class="eyebrow">För er kår</p>
       <h2>Vill ni ha den på er kår?</h2>
       <p>Boten går att sätta upp för vilken kår som helst som publicerar sina styrdokument som PDF. Mejla mig så hjälper jag er att komma igång.</p>
-      <a class="btn btn-dark" href="mailto:tiom.info@gmail.com?subject=Styrdokumentsboten%20f%C3%B6r%20v%C3%A5r%20k%C3%A5r">Mejla tiom.info@gmail.com</a>
+      <a class="btn btn-dark" href="mailto:theodor@tiom.nu?subject=Styrdokumentsboten%20f%C3%B6r%20v%C3%A5r%20k%C3%A5r">Mejla theodor@tiom.nu</a>
     </div>
   </section>
 </main>
@@ -105,7 +114,6 @@ description: En chattbot som svarar på frågor om en studentkårs stadga, regle
       </div>
       <div>
         <h3>Mer av mig</h3>
-        <a href="https://theodorlindberg.com/">Theodor Lindberg</a>
         <a href="https://tiom.nu/">TIOM</a>
         <a href="https://untangle.tiom.nu/">UnTangle</a>
       </div>
@@ -113,6 +121,7 @@ description: En chattbot som svarar på frågor om en studentkårs stadga, regle
   </div>
   <div class="wrap footer-bottom">
     <span>CC BY 4.0. Fri att använda med angivande av upphov.</span>
-    <span>Byggd av <a href="https://theodorlindberg.com/">Theodor Lindberg</a></span>
+    <span class="lang-switch"><a href="{{ '/' | relative_url }}" data-lang="sv" aria-current="true">Svenska</a> · <a href="{{ '/en/' | relative_url }}" data-lang="en" hreflang="en" lang="en">English</a></span>
+    <span>Byggd av Theodor Lindberg</span>
   </div>
 </footer>
