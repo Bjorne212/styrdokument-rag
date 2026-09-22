@@ -1,6 +1,8 @@
 title: Styrdokumentsboten
 description: En chattbot som svarar på frågor om en studentkårs styrdokument, med källhänvisningar. Mall och teknisk dokumentation.
 lang: sv
+url: https://bjorne212.github.io
+baseurl: /styrdokument-rag
 markdown: kramdown
 kramdown:
   input: GFM
