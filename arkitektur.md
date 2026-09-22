@@ -17,9 +17,10 @@ frontend/        Gränssnittets källkod                    (React, byggs till p
 local/           Utvecklings- och mätverktyg              (Ollama, din dator)
 eval/            Utvärderingsfrågor med facit
 scripts/         configure.mjs: kontrollerar konfigurationen
-docs/            Den här dokumentationen                  (GitHub Pages)
 examples/        Exempelkonfigurationer för andra källtyper
 ```
+
+Den här dokumentationen ligger inte i koden. Den finns i grenen `gh-pages` i mallrepot och publiceras därifrån med GitHub Pages, så den följer inte med när en kår forkar eller kopierar mallen.
 
 All kod är TypeScript. I `ingestion/` och `local/` körs den direkt av Node 24 utan byggsteg (Node tar bort typerna själv). Workern paketeras av Wrangler och gränssnittet av Vite.
 

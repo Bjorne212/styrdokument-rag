@@ -12,7 +12,7 @@ Priserna är hämtade från Cloudflares och GitHubs prislistor i september 2026 
 
 ## Var kostnaden uppstår
 
-Boten använder fem tjänster. Bara en av dem, språkmodellen i Workers AI, kan i praktiken ta slut.
+Boten använder fyra tjänster. Bara en av dem, språkmodellen i Workers AI, kan i praktiken ta slut.
 
 | Tjänst | Används till | Ingår gratis | Förbrukning för LinTek |
 |---|---|---|---|
@@ -20,7 +20,6 @@ Boten använder fem tjänster. Bara en av dem, språkmodellen i Workers AI, kan 
 | **Vectorize** | Lagrar styckena ur dokumenten och söker bland dem | 5 miljoner lagrade dimensioner, 30 miljoner sökta dimensioner per månad | 0,94 miljoner lagrade (19 %). Sökningarna är försumbara. |
 | **Workers** | Chattsidan och API:t | 100 000 anrop per dygn. Statiska filer är gratis och obegränsade. | Ett anrop per fråga |
 | **GitHub Actions** | Indexeringen var sjätte timme, och deploy | Obegränsat i publika repon, 2 000 minuter per månad i privata | Under en minut per körning, omkring 120 minuter per månad |
-| **GitHub Pages** | Den här dokumentationen | Gratis för publika repon | Ingen |
 
 Det finns inga engångskostnader. En egen domän (till exempel `boten.karen.se`) är valfri; utan den nås chatten på en gratis `workers.dev`-adress.
 

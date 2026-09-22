@@ -8,6 +8,9 @@ kramdown:
   input: GFM
   hard_wrap: false
   syntax_highlighter: rouge
+exclude:
+  - README.md
+
 repository_url: https://github.com/Bjorne212/styrdokument-rag
 
 nav:
