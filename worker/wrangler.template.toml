@@ -40,6 +40,17 @@ HISTORY_ANSWER_CHARS = "500"
 # Antal dokumentstycken som hämtas och skickas till modellen.
 TOP_K = "8"
 
+# Guardrails-tillägget. Avstängt tills Workern har en nyckel:
+#   npx wrangler secret put GUARD_KEY
+# Utan nyckel används inte adressen, och ingen fråga lämnar Cloudflare-kontot.
+# Med nyckel skickas frågan och tidigare frågor (aldrig svar) hit för bedömning.
+# Adressen är densamma för alla kårer och fylls i här, i mallen, när guarden
+# är i drift. En kår ändrar den inte.
+GUARD_URL = ""
+
+# Hur länge vi väntar på guarden innan frågan behandlas som FILTERED.
+GUARD_TIMEOUT_MS = "1500"
+
 # Workers AI: embeddings av frågan + själva svaret.
 [ai]
 binding = "AI"

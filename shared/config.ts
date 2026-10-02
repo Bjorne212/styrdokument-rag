@@ -40,6 +40,22 @@ export type PdfListSource = {
 
 export type SourceConfig = GitlabAppenderSource | HtmlLinksSource | PdfListSource;
 
+/**
+ * Färdiga svar när guardrails-tillägget avvisar en fråga, se
+ * worker/src/guard-client.ts. Används bara när kåren har en GUARD_KEY.
+ *
+ * Ingen av texterna ska avslöja varför frågan avvisades: en text som säger
+ * "det där ser ut som en attack" lär den som försöker vad som fastnade.
+ */
+export type GuardrailsTexts = {
+  /** Frågor utanför ämnet, och försök att få boten att bryta sina regler. */
+  refusal: string;
+  /** Svar på en hälsning eller ett tack. */
+  greeting: string;
+  /** Svar på frågor om boten själv: vad den är och vad den kan. */
+  meta: string;
+};
+
 export type KarConfig = {
   /** Kort id i gemener, t.ex. "lintek". */
   id: string;
@@ -62,6 +78,8 @@ export type KarConfig = {
     /** Extra ord som bara förekommer i svensk text, för språkgissningen. */
     swedishMarkers: string[];
   };
+  /** Valfri. Saknas den används standardtexterna i guard-client.ts. */
+  guardrails?: Partial<GuardrailsTexts>;
 };
 
 export const kar = raw as KarConfig;

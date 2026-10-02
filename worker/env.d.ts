@@ -15,6 +15,11 @@ interface Env {
    * Optional så att en Worker utan bindningen fungerar som förut.
    */
   CHAT_LIMIT?: RateLimit;
+  /** Guardrails-tillägget, se guard-client.ts. Avstängt utan GUARD_KEY. */
+  GUARD_URL?: string;
+  /** Secret: kårens nyckel till guarden. */
+  GUARD_KEY?: string;
+  GUARD_TIMEOUT_MS?: string;
   /** Justerbara värden från [vars] i wrangler.toml. */
   HISTORY_TURNS?: string;
   HISTORY_ANSWER_CHARS?: string;

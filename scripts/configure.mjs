@@ -63,6 +63,12 @@ if (!Array.isArray(source.sections) || source.sections.length === 0) {
 if (source.type === "gitlab-appender") need("source.baseUrl", source.baseUrl);
 if (!Array.isArray(config.cleanup?.boilerplate)) problems.push("cleanup.boilerplate måste vara en lista");
 if (!Array.isArray(config.cleanup?.swedishMarkers)) problems.push("cleanup.swedishMarkers måste vara en lista");
+if (config.guardrails !== undefined) {
+  for (const key of Object.keys(config.guardrails)) {
+    if (!["refusal", "greeting", "meta"].includes(key)) problems.push(`guardrails.${key} är okänd`);
+    else need(`guardrails.${key}`, config.guardrails[key]);
+  }
+}
 
 if (problems.length) {
   console.error("kar/kar.config.json har fel:");

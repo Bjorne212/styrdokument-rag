@@ -36,5 +36,10 @@
       "Hemsida www.lintek.liu.se"
     ],
     "swedishMarkers": ["kårfullmäktige", "LinTeks"]
+  },
+  "guardrails": {
+    "refusal": "Jag kan bara svara på frågor om LinTeks styrdokument, till exempel stadgan, reglementet eller en policy. Vad vill du veta om dem?",
+    "greeting": "Hej! Fråga mig om LinTeks styrdokument, till exempel vem som beslutar om något, vad en post ansvarar för eller vad en policy säger.",
+    "meta": "Jag är en chattbot som söker i LinTeks publicerade styrdokument och svarar med hänvisning till var det står. Jag kan bara svara på det som står i dokumenten."
   }
 }

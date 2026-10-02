@@ -29,11 +29,26 @@ GitHub Actions (every 6 hours)                     Browser
    │  1. Cheap fingerprint per section                │  POST /api/chat
    │  2. Download changed PDFs, compare sha256        ▼
    │  3. Extract, chunk, embed (bge-m3)            Cloudflare Worker
-   │  4. Upsert, delete removed documents             │  1. Password check
-   ▼                                                  │  2. Embed question, top 8 from Vectorize
-Cloudflare Vectorize  ◄───────────────────────────────┤  3. Prompt that forbids answering outside them
-                                                      │  4. Stream the answer, sources first
+   │  4. Upsert, delete removed documents             │  1. Password check, rate limit
+   ▼                                                  │  2. Embed question, top 8 from Vectorize,
+Cloudflare Vectorize  ◄───────────────────────────────┤     and ask the guard at the same time (add-on)
+                                                      │  3. No hits, or REJECT: a fixed answer, no model call
+                                                      │  4. Prompt with the documents as delimited data,
+                                                      │     stricter if FILTERED
+                                                      │  5. Stream the answer, sources first
 ```
+
+## Guardrails add-on
+
+Optional, and off unless the worker has a `GUARD_KEY` secret. With a key, each question and the earlier questions in the conversation (never the answers) go to a separate guard service, asked while the documents are searched. It answers with one of three routes:
+
+| Route | What the worker does |
+|---|---|
+| `ALLOW` | Answers as usual |
+| `FILTERED` | Answers with a stricter prompt, without the earlier conversation, in at most 400 tokens |
+| `REJECT` | Sends a fixed text from `guardrails` in `kar/kar.config.json`, without calling the model |
+
+If the guard is down, slow or rejects the key, the question is treated as `FILTERED`, so the bot keeps answering. The client is `worker/src/guard-client.ts`; the guard service itself is not part of this repository.
 
 ## Repository layout
 

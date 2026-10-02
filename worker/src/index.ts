@@ -17,6 +17,7 @@
 import { checkPassword } from "./auth.ts";
 import { limitsFromEnv, retrievalQuery, sanitizeHistory, type Exchange } from "./history.ts";
 import { looksRepetitive } from "./loopguard.ts";
+import { askGuard, rejectText, type Decision } from "./guard-client.ts";
 import { buildMessages, noHitsAnswer } from "./prompt.ts";
 import { retrieve, type RetrievedChunk } from "./retrieve.ts";
 
@@ -145,6 +146,7 @@ async function streamAnswer(
   messages: ReturnType<typeof buildMessages>,
   writer: WritableStreamDefaultWriter<Uint8Array>,
   encoder: TextEncoder,
+  maxTokens: number,
 ): Promise<void> {
   // Typerna för AI.run täcker inte strömmande svar per modellnamn, därför
   // castet: med stream: true är returvärdet alltid en ReadableStream.
@@ -152,7 +154,7 @@ async function streamAnswer(
     env.AI.run(model as keyof AiModels, {
       messages,
       stream: true,
-      max_tokens: 800,
+      max_tokens: maxTokens,
       // Låg temperatur håller svaren nära källtexten, men för låg gör att
       // modellen fastnar i upprepningar. 0,3 med repetitionsstraff är
       // avvägningen mellan trogna och läsbara svar.
@@ -246,16 +248,33 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
     }
   }
 
+  // Guarden tillfrågas medan dokumenten söks, så att dess svarstid göms
+  // bakom sökningen. Utan GUARD_KEY blir svaret null direkt.
+  const guarding = askGuard(env, question, history);
+
   const { chunks } = await retrieve(env, question, {
     searchText: retrievalQuery(question, history),
     topK: Number(env.TOP_K ?? "8"),
   });
 
+  // Guarden svarar med ett beslut för vardera utfallet av sökningen, eftersom
+  // den inte kunde veta det när den tillfrågades.
+  const verdict = await guarding;
+  const decision: Decision = verdict ? (chunks.length > 0 ? verdict.withHits : verdict.withoutHits) : { route: "ALLOW" };
+
+  if (decision.route === "REJECT") {
+    return cannedAnswer(rejectText(decision.kind));
+  }
+
   if (chunks.length === 0) {
     return cannedAnswer(noHitsAnswer());
   }
 
-  const messages = buildMessages(question, chunks, history);
+  const caution = decision.route === "FILTERED" ? decision.kind : undefined;
+  const messages = buildMessages(question, chunks, history, caution);
+  // Ett försiktigt svar ska vara kort: det ska återge dokumenten, inte
+  // resonera, och en manipulerad fråga får mindre utrymme att verka.
+  const maxTokens = caution ? 400 : 800;
 
   const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
   const writer = writable.getWriter();
@@ -267,13 +286,13 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
       await writer.write(encoder.encode(sse("sources", uniqueSources(chunks))));
 
       try {
-        await streamAnswer(env, PRIMARY_MODEL, messages, writer, encoder);
+        await streamAnswer(env, PRIMARY_MODEL, messages, writer, encoder, maxTokens);
       } catch (primaryError) {
-        // Vanligaste orsaken är att dagskvoten tagit slut. Reservmodellen är
-        // billigare, så den kan fungera även när den stora inte gör det.
+        // Överbelastning, fel eller timeout hos 70B. Reserven kommer från en
+        // annan leverantör, se FALLBACK_MODEL.
         console.log(`Primärmodellen misslyckades: ${(primaryError as Error).message}`);
         await writer.write(encoder.encode(sse("notice", "Svarar med reservmodellen.")));
-        await streamAnswer(env, FALLBACK_MODEL, messages, writer, encoder);
+        await streamAnswer(env, FALLBACK_MODEL, messages, writer, encoder, maxTokens);
       }
 
       await writer.write(encoder.encode(sse("done", {})));
