@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import logo from "@/assets/logo.png";
+import logo from "@kar/logo.png";
 import { kar } from "../../../shared/config";
 
 const TITLE = `${kar.botName} – sök i ${kar.nameGenitive} styrdokument`;

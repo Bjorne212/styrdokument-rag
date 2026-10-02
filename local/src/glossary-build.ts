@@ -6,7 +6,7 @@
  * massor. Genom att expandera kända förkortningar i frågan innan den embeddas
  * får sökningen det innehållet gratis: ingen extra modell, inga neurons.
  *
- * Listan skrivs till worker/src/glossary.json, som Workern importerar. Den är
+ * Listan skrivs till kar/glossary.json, som Workern importerar. Den är
  * genererad, inte handskriven: ändras dokumenten körs det här om.
  *
  * Kör:  node src/glossary-build.ts
@@ -18,7 +18,7 @@ import { chunkDocument } from "../../ingestion/src/chunk.ts";
 import { extractDocument } from "../../ingestion/src/extract.ts";
 import { scrapeArchive } from "../../ingestion/src/scrape.ts";
 
-const OUTPUT = join(import.meta.dirname, "../../worker/src/glossary.json");
+const OUTPUT = join(import.meta.dirname, "../../kar/glossary.json");
 
 /**
  * Dokumenten introducerar förkortningar på formen

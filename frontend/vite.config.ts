@@ -17,7 +17,7 @@ export default defineConfig({
   // @-aliaset i tsconfig.json löses av Vite självt sedan version 8, så
   // vite-tsconfig-paths behövs inte längre.
   resolve: { tsconfigPaths: true },
-  // kar.config.json och shared/ ligger utanför frontend/, i repots rot.
+  // kar/ och shared/ ligger utanför frontend/, i repots rot.
   server: { fs: { allow: [".."] } },
   plugins: [
     tailwindcss(),

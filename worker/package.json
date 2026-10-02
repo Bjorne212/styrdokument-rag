@@ -6,9 +6,12 @@
   "description": "Chat-API mot kårens styrdokument: lösenordskoll, sökning i Vectorize och svar via Workers AI",
   "license": "CC-BY-4.0",
   "scripts": {
+    "predev": "node ../scripts/configure.mjs",
     "dev": "wrangler dev",
+    "predeploy": "node ../scripts/configure.mjs",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
+    "pretypes": "node ../scripts/configure.mjs",
     "types": "wrangler types"
   },
   "devDependencies": {

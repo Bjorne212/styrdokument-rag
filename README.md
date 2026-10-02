@@ -2,7 +2,7 @@
 
 A chatbot that answers questions about a Swedish student union's governing documents (stadga, reglemente, policies, guidelines, annual plans), with every answer grounded in the documents and citing the source PDF and section. If the archive does not contain the answer, the bot says so rather than guessing.
 
-This is the template version of [LinTek's governing documents bot](https://github.com/Bjorne212/linus). Everything specific to one union lives in a single file, `kar.config.json`; the rest of the code is shared. The whole system runs inside the free tiers of GitHub and Cloudflare.
+This is the template version of [LinTek's governing documents bot](https://github.com/Bjorne212/linus). Everything specific to one union lives in one folder, `kar/`; the rest of the code is shared. The whole system runs inside the free tiers of GitHub and Cloudflare.
 
 **Documentation (Swedish): <https://bjorne212.github.io/styrdokument-rag/>**
 
@@ -12,7 +12,7 @@ The bot reads the union's public document archive and nothing else, so updating 
 
 ## Document sources
 
-Unions publish their documents in different ways. `source.type` in `kar.config.json` selects how the archive is read:
+Unions publish their documents in different ways. `source.type` in `kar/kar.config.json` selects how the archive is read:
 
 | Type | For |
 |---|---|
@@ -38,18 +38,41 @@ Cloudflare Vectorize  ◄──────────────────�
 ## Repository layout
 
 ```
-kar.config.json  The union's configuration                (read by every part)
+kar/             Everything specific to the union: configuration, logo,
+                 colors, evaluation questions and generated data
 shared/          Typed loader for the configuration
 ingestion/       Scraping, extraction, chunking, embedding (GitHub Actions)
 worker/          Chat API and site                        (Cloudflare Workers)
 frontend/        Interface source                         (React, built to pages/)
 local/           Development and evaluation tools         (Ollama)
-eval/            Evaluation questions with known answers
-scripts/         configure.mjs: validates the configuration
+scripts/         configure.mjs: validates the configuration and writes worker/wrangler.toml
 examples/        Example configurations for other source types
 ```
 
-The repository ships configured for LinTek, the reference instance. `ingestion/duplicates.json`, `eval/questions.json` and `worker/src/glossary.json` contain LinTek's data and should be reset for another union.
+The repository ships with LinTek, the reference instance, in `kar/`:
+
+| File | Contents |
+|---|---|
+| `kar.config.json` | Name, description, document source, Cloudflare names |
+| `logo.png`, `favicon.png` | Shown in the interface |
+| `theme.css` | The union's colors, applied on top of the neutral defaults |
+| `eval/questions.json` | Evaluation questions with known answers |
+| `glossary.json`, `duplicates.json` | Generated from the documents by the tools in `local/` |
+| `manifest.json` | Written by the ingestion job, created on the first run |
+
+For another union, replace the contents of `kar/` and nothing else. `worker/wrangler.toml` is not checked in: `scripts/configure.mjs` writes it from `worker/wrangler.template.toml`, and the worker's `dev` and `deploy` scripts run it first.
+
+## Your own copy
+
+Clone this repository rather than copying it, and keep it as a remote, so fixes reach your instance:
+
+```bash
+git remote add upstream https://github.com/Bjorne212/styrdokument-rag.git
+git config merge.ours.driver true
+git pull upstream main
+```
+
+The template never changes `kar/` once you have your own copy. `.gitattributes` keeps your version of `kar/` if it ever does, which is what the `merge.ours.driver` setting enables.
 
 ## Documentation
 

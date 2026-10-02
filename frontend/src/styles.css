@@ -102,40 +102,40 @@
 
 :root {
   --radius: 0.75rem;
-  /* LinTek: magenta #E1007A, ljusrosa #D786B3, svart #000000, NCS S 3000-N grå */
+  /* Neutrala standardfärger. Kårens egna färger ligger i kar/theme.css, som
+     läses in efter den här filen och skriver över accentfärgerna nedan. */
   --background: oklch(1 0 0);
   --foreground: oklch(0 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0 0 0);
-  /* Kårens accentfärg: knappar och länkar. Byt till kårens egen. */
-  --primary: oklch(0.5817 0.2404 1.35);
+  --primary: oklch(0.3 0 0);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.9508 0.0212 348.5);
+  --secondary: oklch(0.95 0 0);
   --secondary-foreground: oklch(0.2 0 0);
   --muted: oklch(0.968 0 0);
   --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.7433 0.115 348.9);
+  --accent: oklch(0.75 0 0);
   --accent-foreground: oklch(0 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.8934 0 0);
   --input: oklch(0.8934 0 0);
-  --ring: oklch(0.5817 0.2404 1.35);
-  --chart-1: oklch(0.5817 0.2404 1.35);
-  --chart-2: oklch(0.7433 0.115 348.9);
+  --ring: oklch(0.3 0 0);
+  --chart-1: oklch(0.3 0 0);
+  --chart-2: oklch(0.75 0 0);
   --chart-3: oklch(0.55 0 0);
   --chart-4: oklch(0.3 0 0);
   --chart-5: oklch(0.8 0 0);
   --sidebar: oklch(0.984 0 0);
   --sidebar-foreground: oklch(0 0 0);
-  --sidebar-primary: oklch(0.5817 0.2404 1.35);
+  --sidebar-primary: oklch(0.3 0 0);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.9508 0.0212 348.5);
+  --sidebar-accent: oklch(0.95 0 0);
   --sidebar-accent-foreground: oklch(0 0 0);
   --sidebar-border: oklch(0.8934 0 0);
-  --sidebar-ring: oklch(0.5817 0.2404 1.35);
+  --sidebar-ring: oklch(0.3 0 0);
 }
 
 .dark {
@@ -193,14 +193,13 @@
   }
 }
 
-/* Startsidans mörka aurora-hero (LinTek-magenta) */
+/* Startsidans mörka aurora-hero. Bakgrund och glöd sätts i kar/theme.css. */
 :root {
-  --hero-bg: oklch(0.18 0.008 320);
+  --hero-bg: oklch(0.18 0 0);
   --hero-fg: oklch(0.99 0 0);
-  /* Glöden bakom rubriken på startsidan, i kårens färger. */
-  --hero-glow-1: oklch(0.62 0.24 1.35);
-  --hero-glow-2: oklch(0.74 0.115 348.9);
-  --hero-surface: oklch(0.24 0.012 320);
+  --hero-glow-1: oklch(0.5 0 0);
+  --hero-glow-2: oklch(0.6 0 0);
+  --hero-surface: oklch(0.24 0 0);
   --hero-border: oklch(1 0 0 / 14%);
   --hero-muted: oklch(1 0 0 / 62%);
 }

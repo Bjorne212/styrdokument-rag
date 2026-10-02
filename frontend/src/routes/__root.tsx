@@ -9,6 +9,10 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import favicon from "@kar/favicon.png";
+// Kårens färger, efter appens egna regler så att de vinner. Ligger i kar/ för
+// att en klon ska kunna byta färger utan att röra styles.css.
+import themeCss from "@kar/theme.css?url";
 import appCss from "../styles.css?url";
 import { kar } from "../../../shared/config";
 
@@ -90,7 +94,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "stylesheet", href: themeCss },
+      { rel: "icon", href: favicon, type: "image/png" },
     ],
   }),
   shellComponent: RootShell,

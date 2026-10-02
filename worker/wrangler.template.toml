@@ -1,6 +1,11 @@
-# name och index_name skrivs av `node scripts/configure.mjs` utifrån
-# kar.config.json. Ändra dem där, inte här.
-name = "lintek-styrdokument-rag"
+# Mall för worker/wrangler.toml. `node scripts/configure.mjs` fyller i
+# platshållarna ur kar/kar.config.json och skriver resultatet till
+# wrangler.toml, som inte checkas in.
+#
+# Varför en mall: wrangler.toml innehåller kårens namn. Låg den i git skulle
+# varje kårs klon ändra samma fil som mallrepot, och varje uppdatering från
+# mallen skulle ge en konflikt. Ändra här för det som gäller alla kårer.
+name = "{{workerName}}"
 main = "src/index.ts"
 compatibility_date = "2026-09-01"
 
@@ -20,7 +25,7 @@ binding = "ASSETS"
 # fil med det namnet, nu serveras index.html och appen tar hand om resten.
 not_found_handling = "single-page-application"
 
-# Justerbara värden. Ändra här och kör `wrangler deploy`: ingen kodändring behövs.
+# Justerbara värden. Ändra här och deploya: ingen kodändring behövs.
 [vars]
 # Hur många tidigare fråga/svar-par som får följa med en följdfråga.
 # Varje par kostar input-tokens av dagskvoten, så det här är ratten som styr
@@ -42,7 +47,7 @@ binding = "AI"
 # Vektordatabasen som ingestionen fyller på.
 [[vectorize]]
 binding = "VECTORIZE"
-index_name = "lintek-styrdokument"
+index_name = "{{indexName}}"
 
 # SHARED_PASSWORD sätts som secret, aldrig här:
 #   npx wrangler secret put SHARED_PASSWORD

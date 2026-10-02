@@ -1,0 +1,11 @@
+# kar/ tillhör kårens klon, inte mallen.
+#
+# Ändrar både mallen och klonen samma fil i kar/ behåller en sammanslagning
+# klonens version i stället för att ge en konflikt. Strategin "ours" måste
+# slås på en gång per klon:
+#
+#   git config merge.ours.driver true
+#
+# Mallen ändrar normalt aldrig kar/ efter att en klon skapats, så det här är
+# ett skyddsnät, inte en arbetsgång.
+kar/** merge=ours

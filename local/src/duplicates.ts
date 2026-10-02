@@ -22,7 +22,7 @@ import { join } from "node:path";
 import { EMBEDDING_DIMENSIONS } from "./embeddings.ts";
 import { loadLocalIndex } from "./localindex.ts";
 
-const OUTPUT = join(import.meta.dirname, "../../ingestion/duplicates.json");
+const OUTPUT = join(import.meta.dirname, "../../kar/duplicates.json");
 
 /** Under detta räknas två dokument inte som samma sak. Satt efter inspektion. */
 const DEFAULT_THRESHOLD = 0.86;

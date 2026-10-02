@@ -1,0 +1,32 @@
+/*
+ * Kårens färger.
+ *
+ * Läses in efter appens stilmall och skriver över dess neutrala standardfärger
+ * (se :root i frontend/src/styles.css). Filen ligger i kar/ för att en klon
+ * ska kunna byta färger utan att ändra styles.css, som mallen uppdaterar.
+ *
+ * LinTek: magenta #E1007A, ljusrosa #D786B3, svart #000000, NCS S 3000-N grå.
+ */
+:root {
+  /* Accentfärgen: knappar, länkar och fokusringar. */
+  --primary: oklch(0.5817 0.2404 1.35);
+  --ring: oklch(0.5817 0.2404 1.35);
+  --chart-1: oklch(0.5817 0.2404 1.35);
+  --sidebar-primary: oklch(0.5817 0.2404 1.35);
+  --sidebar-ring: oklch(0.5817 0.2404 1.35);
+
+  /* En ljus ton av accenten, för bakgrunder. */
+  --secondary: oklch(0.9508 0.0212 348.5);
+  --sidebar-accent: oklch(0.9508 0.0212 348.5);
+
+  /* En mellanton, för detaljer. */
+  --accent: oklch(0.7433 0.115 348.9);
+  --chart-2: oklch(0.7433 0.115 348.9);
+
+  /* Startsidans mörka hero: bakgrunden har en svag dragning åt accenten, och
+     glöden bakom rubriken är accenten själv. */
+  --hero-bg: oklch(0.18 0.008 320);
+  --hero-surface: oklch(0.24 0.012 320);
+  --hero-glow-1: oklch(0.62 0.24 1.35);
+  --hero-glow-2: oklch(0.74 0.115 348.9);
+}

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useChat, type Message } from "../lib/use-chat";
 import type { Source } from "../lib/chat-api";
-import logo from "@/assets/logo.png";
+import logo from "@kar/logo.png";
 import { kar } from "../../../shared/config";
 
 const STORAGE_KEY = `${kar.id}-password`;

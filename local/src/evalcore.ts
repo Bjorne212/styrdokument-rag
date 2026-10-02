@@ -10,7 +10,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const QUESTIONS_PATH = join(import.meta.dirname, "../../eval/questions.json");
+const QUESTIONS_PATH = join(import.meta.dirname, "../../kar/eval/questions.json");
 
 export type EvalQuestion = {
   id: string;

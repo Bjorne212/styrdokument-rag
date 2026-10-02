@@ -1,5 +1,5 @@
 /**
- * Kårens konfiguration, läst ur kar.config.json i repots rot.
+ * Kårens konfiguration, läst ur kar/kar.config.json.
  *
  * Det här är det enda stället som vet vilken kår instansen tillhör. Både
  * ingestionen, Workern och gränssnittet importerar härifrån, så att byta kår
@@ -10,7 +10,7 @@
  * import-attribut.
  */
 
-import raw from "../kar.config.json" with { type: "json" };
+import raw from "../kar/kar.config.json" with { type: "json" };
 
 export type SectionConfig = {
   /** Kort id, används i vektor-id:n och cachesökvägar. Byt inte i efterhand. */

@@ -9,8 +9,11 @@ dist/
 
 # pages/ är BYGGD utdata från frontend/ (`npm run build:pages`). Den byggs
 # av deploy-jobbet i GitHub Actions och lokalt vid behov, och checkas inte in:
-# innehållet beror på kar.config.json och skulle annars bli inaktuellt.
+# innehållet beror på kar/ och skulle annars bli inaktuellt.
 pages/
+
+# Genereras ur worker/wrangler.template.toml av scripts/configure.mjs.
+worker/wrangler.toml
 
 
 # Nedladdade PDF:er och mellanliggande data (hämtas alltid om från källan)

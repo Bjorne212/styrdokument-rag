@@ -19,7 +19,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const PATH = join(import.meta.dirname, "../duplicates.json");
+const PATH = join(import.meta.dirname, "../../kar/duplicates.json");
 
 let cached: Set<string> | null = null;
 

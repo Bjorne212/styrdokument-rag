@@ -39,7 +39,7 @@ import { scrapeArchive, type ArchiveDocument } from "./scrape.ts";
 import { source } from "./sources/index.ts";
 import { loadSkipList } from "./skiplist.ts";
 
-const MANIFEST_PATH = join(import.meta.dirname, "../manifest.json");
+const MANIFEST_PATH = join(import.meta.dirname, "../../kar/manifest.json");
 
 /** Så många texter per embedding-anrop. Färre anrop, samma tokenkostnad. */
 const EMBED_BATCH = 50;

@@ -19,7 +19,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "kar.config.json"
+      - "kar/**"
       - "shared/**"
       - "frontend/**"
       - "worker/**"
@@ -44,7 +44,7 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Kontrollera kar.config.json
+      - name: Kontrollera kar/ och skriv wrangler.toml
         run: node scripts/configure.mjs
 
       - name: Bygg gränssnittet

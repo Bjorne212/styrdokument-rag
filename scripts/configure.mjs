@@ -1,10 +1,13 @@
 /**
- * Kontrollerar kar.config.json och för över namnen till worker/wrangler.toml.
+ * Kontrollerar kar/kar.config.json och skriver worker/wrangler.toml.
  *
  * wrangler.toml kan inte läsa JSON, så Workerns namn och indexets namn måste
- * stå i den filen också. Det här skriptet ser till att de två aldrig glider
- * isär: kör det efter varje ändring i kar.config.json. Deploy-jobbet i
- * GitHub Actions kör det automatiskt.
+ * stå i den filen också. Filen byggs därför ur worker/wrangler.template.toml
+ * och checkas inte in: på så sätt ändrar en kårs klon aldrig en fil som
+ * mallrepot också ändrar, och uppdateringar från mallen går in utan konflikt.
+ *
+ * Körs automatiskt före `npm run dev` och `npm run deploy` i worker/, och av
+ * deploy-jobbet i GitHub Actions.
  *
  * Kör:  node scripts/configure.mjs
  */
@@ -13,7 +16,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const config = JSON.parse(await readFile(`${root}kar.config.json`, "utf8"));
+const config = JSON.parse(await readFile(`${root}kar/kar.config.json`, "utf8"));
 
 const problems = [];
 const need = (path, value) => {
@@ -62,20 +65,26 @@ if (!Array.isArray(config.cleanup?.boilerplate)) problems.push("cleanup.boilerpl
 if (!Array.isArray(config.cleanup?.swedishMarkers)) problems.push("cleanup.swedishMarkers måste vara en lista");
 
 if (problems.length) {
-  console.error("kar.config.json har fel:");
+  console.error("kar/kar.config.json har fel:");
   for (const problem of problems) console.error(`  - ${problem}`);
   process.exit(1);
 }
 
-const tomlPath = `${root}worker/wrangler.toml`;
-const before = await readFile(tomlPath, "utf8");
-const after = before
-  .replace(/^name = ".*"$/m, `name = "${config.cloudflare.workerName}"`)
-  .replace(/^index_name = ".*"$/m, `index_name = "${config.cloudflare.indexName}"`);
+const template = await readFile(`${root}worker/wrangler.template.toml`, "utf8");
+const toml =
+  "# GENERERAD av scripts/configure.mjs ur wrangler.template.toml. Ändra inte här.\n\n" +
+  template
+    .replaceAll("{{workerName}}", config.cloudflare.workerName)
+    .replaceAll("{{indexName}}", config.cloudflare.indexName);
 
-if (after !== before) {
-  await writeFile(tomlPath, after, "utf8");
-  console.log("Uppdaterade worker/wrangler.toml.");
+// En platshållare som inte fylldes i skulle bli ett Worker-namn med klamrar,
+// som Cloudflare avvisar först vid deploy. Bättre att stoppa här.
+const leftover = toml.match(/{{\w+}}/);
+if (leftover) {
+  console.error(`wrangler.template.toml har en okänd platshållare: ${leftover[0]}`);
+  process.exit(1);
 }
+
+await writeFile(`${root}worker/wrangler.toml`, toml, "utf8");
 
 console.log(`OK: ${config.name}, Worker "${config.cloudflare.workerName}", index "${config.cloudflare.indexName}".`);

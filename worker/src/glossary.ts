@@ -23,7 +23,7 @@
  * kopplas på igen, se ingestion/src/compare-glossary.ts.
  */
 
-import glossary from "./glossary.json" with { type: "json" };
+import glossary from "../../kar/glossary.json" with { type: "json" };
 
 const ABBREVIATIONS = glossary as Record<string, string>;
 
