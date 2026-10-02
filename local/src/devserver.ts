@@ -18,7 +18,7 @@ import { createReadStream } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { extname, join, normalize as normalizePath } from "node:path";
-import { buildMessages } from "../../worker/src/prompt.ts";
+import { buildMessages, noHitsAnswer } from "../../worker/src/prompt.ts";
 import { retrievalQuery, sanitizeHistory } from "../../worker/src/history.ts";
 import { looksRepetitive } from "../../worker/src/loopguard.ts";
 import { MIN_SCORE, TOP_K } from "../../worker/src/retrieve.ts";
@@ -120,6 +120,15 @@ async function main(): Promise<void> {
           }),
         );
         response.write(sse("sources", sources));
+
+        // Samma kortslutning som i Workern: utan dokument finns inget att
+        // låta modellen formulera.
+        if (hits.length === 0) {
+          response.write(sse("token", noHitsAnswer()));
+          response.write(sse("done", {}));
+          response.end();
+          return;
+        }
         response.write(
           sse(
             "notice",

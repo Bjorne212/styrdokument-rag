@@ -17,19 +17,26 @@
 import { checkPassword } from "./auth.ts";
 import { limitsFromEnv, retrievalQuery, sanitizeHistory, type Exchange } from "./history.ts";
 import { looksRepetitive } from "./loopguard.ts";
-import { buildMessages } from "./prompt.ts";
+import { buildMessages, noHitsAnswer } from "./prompt.ts";
 import { retrieve, type RetrievedChunk } from "./retrieve.ts";
 
 /**
  * Modellen som skriver svaren, och reserven.
  *
- * 70B ger bättre svenska men kostar ~103 neurons per fråga av dagskvoten på
- * 10 000. Tar kvoten slut faller vi tillbaka på 8B (~62 neurons) i stället för
- * att gå ner. Tjänsten blir enklare i svaren sista timmarna på dygnet, men
- * fortsätter fungera.
+ * 70B ger bra svenska och kostar ~103 neurons per fråga av dagskvoten på
+ * 10 000. Reserven är till för när 70B inte svarar: överbelastning, fel eller
+ * timeout. Den kommer från en annan leverantör än 70B, så att de inte faller
+ * samtidigt, och klarade svenska lika bra i en jämförelse 2026-10-02.
+ *
+ * Reserven räddar inte en slut dagskvot. På gratisplanen går inga anrop alls
+ * igenom när kvoten är förbrukad, oavsett modell.
+ *
+ * Den tidigare reserven, @cf/meta/llama-3.1-8b-instruct, avvecklades
+ * 2026-05-30. Byts en modell ut igen märks det först när primären fallerar,
+ * så pröva reserven för sig när modellkatalogen ändras.
  */
 const PRIMARY_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
-const FALLBACK_MODEL = "@cf/meta/llama-3.1-8b-instruct";
+const FALLBACK_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
 
 const MAX_QUESTION_LENGTH = 1000;
 
@@ -76,6 +83,22 @@ function explainFailure(error: unknown): string {
 /** Ett meddelande i vår egen SSE-ström till webbläsaren. */
 function sse(event: string, data: unknown): string {
   return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+}
+
+/**
+ * Ett färdigt svar, i samma format som ett genererat.
+ *
+ * Gränssnittet ser ingen skillnad på ett svar från modellen och ett som
+ * skickas härifrån utan modellanrop, så det behöver inte ändras.
+ */
+function cannedAnswer(text: string): Response {
+  const body = sse("sources", []) + sse("token", text) + sse("done", {});
+  return new Response(body, {
+    headers: {
+      "content-type": "text/event-stream; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  });
 }
 
 function jsonError(status: number, message: string): Response {
@@ -160,10 +183,17 @@ async function streamAnswer(
       if (payload === "[DONE]") continue;
 
       try {
-        const parsed = JSON.parse(payload) as { response?: string };
-        if (parsed.response) {
-          answer += parsed.response;
-          await writer.write(encoder.encode(sse("token", parsed.response)));
+        // Workers AI har gått över till OpenAI-formatet (choices[].delta).
+        // Vissa modeller skickar fortfarande med det gamla fältet response,
+        // andra (t.ex. gpt-oss) gör det inte: läs båda.
+        const parsed = JSON.parse(payload) as {
+          response?: string;
+          choices?: { delta?: { content?: string | null } }[];
+        };
+        const text = parsed.response || parsed.choices?.[0]?.delta?.content;
+        if (text) {
+          answer += text;
+          await writer.write(encoder.encode(sse("token", text)));
 
           if (looksRepetitive(answer)) {
             await reader.cancel();
@@ -206,10 +236,25 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
     return jsonError(400, `Frågan är för lång (max ${MAX_QUESTION_LENGTH} tecken).`);
   }
 
-  const chunks = await retrieve(env, question, {
+  // Efter lösenordet, så att bara riktiga användare räknas: annars kunde vem
+  // som helst låsa ute alla genom att skicka felaktiga försök. Nyckeln är
+  // densamma för alla, se ratelimit i wrangler.template.toml.
+  if (env.CHAT_LIMIT) {
+    const { success } = await env.CHAT_LIMIT.limit({ key: "chat" });
+    if (!success) {
+      return jsonError(429, "Många frågor just nu. Vänta en minut och försök igen.");
+    }
+  }
+
+  const { chunks } = await retrieve(env, question, {
     searchText: retrievalQuery(question, history),
     topK: Number(env.TOP_K ?? "8"),
   });
+
+  if (chunks.length === 0) {
+    return cannedAnswer(noHitsAnswer());
+  }
+
   const messages = buildMessages(question, chunks, history);
 
   const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();

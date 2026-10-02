@@ -10,6 +10,11 @@ interface Env {
   ASSETS: Fetcher;
   VECTORIZE: VectorizeIndex;
   SHARED_PASSWORD?: string;
+  /**
+   * Tak för hela tjänsten, se [[ratelimits]] i wrangler.template.toml.
+   * Optional så att en Worker utan bindningen fungerar som förut.
+   */
+  CHAT_LIMIT?: RateLimit;
   /** Justerbara värden från [vars] i wrangler.toml. */
   HISTORY_TURNS?: string;
   HISTORY_ANSWER_CHARS?: string;

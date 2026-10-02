@@ -38,11 +38,21 @@ export type RetrievedChunk = {
   score: number;
 };
 
+export type Retrieval = {
+  chunks: RetrievedChunk[];
+  /**
+   * Bästa poängen före filtreringen mot MIN_SCORE, 0 om indexet inte gav
+   * någon träff alls. Säger hur nära dokumenten frågan ligger även när inget
+   * stycke räckte hela vägen fram, vilket filtrerade träffar inte kan visa.
+   */
+  topScore: number;
+};
+
 export async function retrieve(
   env: Env,
   question: string,
   options: { searchText?: string; topK?: number } = {},
-): Promise<RetrievedChunk[]> {
+): Promise<Retrieval> {
   // Vid en följdfråga söker vi på frågan plus tidigare frågor, se history.ts.
   const embedding = await env.AI.run(EMBEDDING_MODEL, { text: [options.searchText ?? question] });
   const queryVector = (embedding as { data: number[][] }).data[0];
@@ -52,7 +62,7 @@ export async function retrieve(
     returnMetadata: "all",
   });
 
-  return results.matches
+  const chunks = results.matches
     .filter((match) => match.score >= MIN_SCORE)
     .map((match) => {
       const metadata = (match.metadata ?? {}) as Record<string, string | number>;
@@ -67,4 +77,7 @@ export async function retrieve(
       };
     })
     .filter((chunk) => chunk.text.length > 0);
+
+  // Vectorize sorterar träffarna med bäst poäng först.
+  return { chunks, topScore: results.matches[0]?.score ?? 0 };
 }

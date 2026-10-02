@@ -49,6 +49,21 @@ binding = "AI"
 binding = "VECTORIZE"
 index_name = "{{indexName}}"
 
+# Tak för antalet frågor, för hela tjänsten tillsammans.
+#
+# Nyckeln är densamma för alla ("chat"), inte användarens IP-adress: systemet
+# lovar att inga IP-adresser används, och lösenordet är delat, så det finns
+# ingen annan identitet att räkna per. Taket hindrar att dagskvoten bränns på
+# några minuter, inte att den bränns under ett dygn.
+#
+# Räknarna gäller per Cloudflare-plats och är ungefärliga. Perioden kan bara
+# vara 10 eller 60 sekunder. namespace_id är ett valfritt tal, unikt inom
+# kontot.
+[[ratelimits]]
+name = "CHAT_LIMIT"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }
+
 # SHARED_PASSWORD sätts som secret, aldrig här:
 #   npx wrangler secret put SHARED_PASSWORD
 # Lokalt läses den från worker/.dev.vars, som är gitignorerad.
