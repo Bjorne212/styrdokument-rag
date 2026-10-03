@@ -44,10 +44,11 @@ const FAIL_SAFE_RESPONSE: GuardResponse = { v: 1, withHits: FAIL_SAFE, withoutHi
  * Hur länge vi väntar på guarden.
  *
  * Anropet görs medan dokumenten söks, så den första halvsekunden kostar
- * ingenting. Guarden har en egen, kortare gräns mot sin modell och svarar
- * FILTERED när den passeras, så det här är gränsen för nätverket ovanpå.
+ * ingenting. Guarden har en egen, kortare gräns mot sin modell (1 500 ms,
+ * eftersom modellen kan ta ~0,9 s efter en paus) och svarar FILTERED när den
+ * passeras, så det här är gränsen för nätverket ovanpå.
  */
-const DEFAULT_TIMEOUT_MS = 1500;
+const DEFAULT_TIMEOUT_MS = 2500;
 
 const DEFAULT_TEXTS: GuardrailsTexts = {
   refusal: `Jag kan bara svara på frågor om ${kar.nameGenitive} styrdokument. Vad vill du veta om dem?`,

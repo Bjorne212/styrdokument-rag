@@ -48,8 +48,10 @@ TOP_K = "8"
 # är i drift. En kår ändrar den inte.
 GUARD_URL = ""
 
-# Hur länge vi väntar på guarden innan frågan behandlas som FILTERED.
-GUARD_TIMEOUT_MS = "1500"
+# Hur länge vi väntar på guarden innan frågan behandlas som FILTERED. Måste vara
+# längre än guardens egen gräns mot sin modell (1 500 ms), annars ger vi upp
+# precis innan guarden hade svarat.
+GUARD_TIMEOUT_MS = "2500"
 
 # Workers AI: embeddings av frågan + själva svaret.
 [ai]
