@@ -2,7 +2,7 @@
 
 A chatbot that answers questions about a Swedish student union's governing documents (stadga, reglemente, policies, guidelines, annual plans), with every answer grounded in the documents and citing the source PDF and section. If the archive does not contain the answer, the bot says so rather than guessing.
 
-This is the template version of [LinTek's governing documents bot](https://github.com/Bjorne212/linus). Everything specific to one union lives in one folder, `kar/`; the rest of the code is shared. The whole system runs inside the free tiers of GitHub and Cloudflare.
+This is the template version of LinTek's governing documents bot. Everything specific to one union lives in one folder, `kar/`; the rest of the code is shared. The whole system runs inside the free tiers of GitHub and Cloudflare.
 
 **Documentation (Swedish): <https://bjorne212.github.io/styrdokument-rag/>**
 
@@ -72,7 +72,7 @@ The repository ships with LinTek, the reference instance, in `kar/`:
 | `logo.png`, `favicon.png` | Shown in the interface |
 | `theme.css` | The union's colors, applied on top of the neutral defaults |
 | `eval/questions.json` | Evaluation questions with known answers |
-| `glossary.json`, `duplicates.json` | Generated from the documents by the tools in `local/` |
+| `duplicates.json` | Translations to skip, generated from the documents by `npm run duplicates` in `local/` |
 | `manifest.json` | Written by the ingestion job, created on the first run |
 
 For another union, replace the contents of `kar/` and nothing else. `worker/wrangler.toml` is not checked in: `scripts/configure.mjs` writes it from `worker/wrangler.template.toml`, and the worker's `dev` and `deploy` scripts run it first.
@@ -88,6 +88,16 @@ git pull upstream main
 ```
 
 The template never changes `kar/` once you have your own copy. `.gitattributes` keeps your version of `kar/` if it ever does, which is what the `merge.ours.driver` setting enables.
+
+## Tests
+
+```bash
+cd worker && npm test       # chat flow, prompt, history, guardrails client
+cd ingestion && npm test    # document sources
+cd frontend && npm run lint && npm run format:check
+```
+
+The tests replace Workers AI, Vectorize and the guard, so they use no quota and need no account.
 
 ## Documentation
 
