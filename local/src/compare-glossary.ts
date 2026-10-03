@@ -5,7 +5,7 @@
  * innan frågan embeddas. Kör lokalt mot Ollama, alltså gratis.
  */
 
-import { expandAbbreviations } from "../../worker/src/glossary.ts";
+import { expandAbbreviations, loadGlossary } from "./glossary.ts";
 import { loadQuestions, meanReciprocalRank, rankOf, type EvalQuestion } from "./evalcore.ts";
 import { embedTexts } from "./embeddings.ts";
 import { loadLocalIndex, search } from "./localindex.ts";
@@ -27,14 +27,15 @@ async function measure(questions: EvalQuestion[], texts: string[], index: Awaite
 async function main(): Promise<void> {
   const questions = await loadQuestions();
   const index = await loadLocalIndex();
+  const glossary = await loadGlossary();
 
   const utan = await measure(questions, questions.map((q) => q.question), index);
-  const med = await measure(questions, questions.map((q) => expandAbbreviations(q.question)), index);
+  const med = await measure(questions, questions.map((q) => expandAbbreviations(q.question, glossary)), index);
 
   console.log("                     träff@8  plats1    MRR");
   console.log("-".repeat(46));
-  console.log(`utan ordlista        ${(Math.round(utan.recall * 100) + " %").padStart(6)}  ${String(utan.top1).padStart(4)}/20  ${utan.mrr.toFixed(3)}`);
-  console.log(`med ordlista         ${(Math.round(med.recall * 100) + " %").padStart(6)}  ${String(med.top1).padStart(4)}/20  ${med.mrr.toFixed(3)}`);
+  console.log(`utan ordlista        ${(Math.round(utan.recall * 100) + " %").padStart(6)}  ${String(utan.top1).padStart(4)}/${questions.length}  ${utan.mrr.toFixed(3)}`);
+  console.log(`med ordlista         ${(Math.round(med.recall * 100) + " %").padStart(6)}  ${String(med.top1).padStart(4)}/${questions.length}  ${med.mrr.toFixed(3)}`);
 
   console.log("\nFrågor som ändrade placering:");
   let changed = 0;

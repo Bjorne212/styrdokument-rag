@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import logo from "@kar/logo.png";
-import { kar } from "../../../shared/config";
+import { guardrailsConfigured, kar } from "../../../shared/config";
 
 const TITLE = `${kar.botName} – sök i ${kar.nameGenitive} styrdokument`;
 const DESCRIPTION = `Ställ frågor om ${kar.nameGenitive} styrdokument och få svar med länkar till originaldokumenten.`;
@@ -34,11 +34,13 @@ const limits = [
 const faq = [
   {
     q: "Var kommer svaren ifrån?",
-    a: `Boten söker i ${kar.nameGenitive} publicerade styrdokument och hämtar de åtta mest relevanta styckena. Svaret formuleras utifrån dem, och källorna visas alltid ovanför svaret.`,
+    a: `Boten söker i ${kar.nameGenitive} publicerade styrdokument och hämtar de mest relevanta styckena. Svaret formuleras utifrån dem, och källorna visas alltid ovanför svaret.`,
   },
   {
     q: "Sparas mina frågor?",
-    a: "Nej. Det finns inga konton, ingen historik och ingen loggning av samtalet. Frågorna lever i webbläsarens minne så länge fliken är öppen och försvinner när du stänger den.",
+    a: guardrailsConfigured
+      ? "Chatboten sparar ingenting: det finns inga konton, ingen historik och ingen loggning av samtalet, och frågorna försvinner när du stänger fliken. Innan svaret skrivs skickas däremot frågan och dina tidigare frågor i samtalet till en tjänst som bedömer om frågan gäller styrdokumenten. Bedömningen görs av en AI-modell från TypeSafe, via Cloudflare. Skriv därför inga personuppgifter i frågorna."
+      : "Nej. Det finns inga konton, ingen historik och ingen loggning av samtalet. Frågorna lever i webbläsarens minne så länge fliken är öppen och försvinner när du stänger den.",
   },
   {
     q: "Varför behövs ett lösenord?",
@@ -76,11 +78,7 @@ function Index() {
         <div className="hero-aurora" aria-hidden="true" />
 
         <div className="relative w-full max-w-2xl text-center">
-          <img
-            src={logo}
-            alt={kar.name}
-            className="mx-auto h-10 w-auto sm:h-12"
-          />
+          <img src={logo} alt={kar.name} className="mx-auto h-10 w-auto sm:h-12" />
 
           <h1 className="mt-8 text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
             Vad vill du veta om styrdokumenten?
@@ -107,7 +105,9 @@ function Index() {
               className="w-full resize-none bg-transparent px-2 py-1 text-base font-light text-hero-fg outline-none placeholder:text-hero-muted"
             />
             <div className="mt-2 flex items-center justify-between gap-4 px-2">
-              <span className="text-xs font-light text-hero-muted">Inget sparas</span>
+              <span className="text-xs font-light text-hero-muted">
+                {guardrailsConfigured ? "Skriv inga personuppgifter" : "Inget sparas"}
+              </span>
               <button
                 type="submit"
                 className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-primary-foreground transition-colors hover:bg-primary/90"

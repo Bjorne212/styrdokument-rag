@@ -12,28 +12,36 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local("D-DIN"), url("/fonts/D-DIN.woff") format("woff");
+  src:
+    local("D-DIN"),
+    url("/fonts/D-DIN.woff") format("woff");
 }
 @font-face {
   font-family: "D-DIN";
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: local("D-DIN Italic"), url("/fonts/D-DIN-Italic.woff") format("woff");
+  src:
+    local("D-DIN Italic"),
+    url("/fonts/D-DIN-Italic.woff") format("woff");
 }
 @font-face {
   font-family: "D-DIN";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local("D-DIN Bold"), url("/fonts/D-DIN-Bold.woff") format("woff");
+  src:
+    local("D-DIN Bold"),
+    url("/fonts/D-DIN-Bold.woff") format("woff");
 }
 @font-face {
   font-family: "D-DIN Condensed";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local("D-DIN Condensed"), url("/fonts/D-DINCondensed.woff") format("woff");
+  src:
+    local("D-DIN Condensed"),
+    url("/fonts/D-DINCondensed.woff") format("woff");
 }
 
 @import "tailwindcss" source(none);

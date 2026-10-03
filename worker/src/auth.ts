@@ -7,7 +7,13 @@
  * är offentliga.
  *
  * Ingenting om försöken loggas eller räknas: inga IP-adresser, ingen historik.
- * Det är därför systemet inte behandlar några personuppgifter alls.
+ * Systemet sparar alltså inga uppgifter om användarna. Frågorna kan ändå
+ * innehålla personuppgifter som användaren själv skriver in, och med
+ * guardrails-tillägget skickas de vidare för bedömning (se guard-client.ts).
+ *
+ * Felaktiga försök begränsas inte. Ett tak för dem skulle behöva räkna per
+ * avsändare, och utan IP-adresser finns ingen avsändare att räkna på. Ett
+ * gissat lösenord kostar dock inga neurons, så skyddet är ett långt lösenord.
  */
 
 const HEADER = "x-chat-password";

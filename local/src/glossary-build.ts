@@ -6,19 +6,20 @@
  * massor. Genom att expandera kända förkortningar i frågan innan den embeddas
  * får sökningen det innehållet gratis: ingen extra modell, inga neurons.
  *
- * Listan skrivs till kar/glossary.json, som Workern importerar. Den är
+ * Listan skrivs till local/out/glossary.json, som compare-glossary.ts läser. Den är
  * genererad, inte handskriven: ändras dokumenten körs det här om.
  *
  * Kör:  node src/glossary-build.ts
  */
 
-import { writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
 import { chunkDocument } from "../../ingestion/src/chunk.ts";
 import { extractDocument } from "../../ingestion/src/extract.ts";
 import { scrapeArchive } from "../../ingestion/src/scrape.ts";
+import { GLOSSARY_PATH } from "./glossary.ts";
 
-const OUTPUT = join(import.meta.dirname, "../../kar/glossary.json");
+const OUTPUT = GLOSSARY_PATH;
 
 /**
  * Dokumenten introducerar förkortningar på formen
@@ -90,6 +91,7 @@ async function main(): Promise<void> {
   }
 
   const sorted = Object.fromEntries(Object.entries(glossary).sort(([a], [b]) => a.localeCompare(b)));
+  await mkdir(dirname(OUTPUT), { recursive: true });
   await writeFile(OUTPUT, JSON.stringify(sorted, null, 2) + "\n", "utf8");
 
   console.log(`${Object.keys(sorted).length} förkortningar skrivna till ${OUTPUT}:\n`);

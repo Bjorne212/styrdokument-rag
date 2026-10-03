@@ -1,9 +1,10 @@
 /**
  * Chat-API:t.
  *
- * En förfrågan går genom fyra steg: kontrollera lösenordet, hämta relevanta
- * dokumentstycken ur Vectorize, bygga en prompt av dem, och strömma tillbaka
- * modellens svar.
+ * En förfrågan går genom de här stegen: kontrollera lösenordet och taket för
+ * antal frågor, hämta relevanta dokumentstycken ur Vectorize (och, med
+ * guardrails-tillägget, samtidigt fråga guarden hur frågan ska hanteras),
+ * bygga en prompt av styckena, och strömma tillbaka modellens svar.
  *
  * Ingenting sparas. Ingen fråga, inget svar, ingen IP-adress, ingen
  * sessionsdata. Workern har medvetet varken KV, D1 eller R2 bundet till sig,
@@ -19,7 +20,7 @@ import { limitsFromEnv, retrievalQuery, sanitizeHistory, type Exchange } from ".
 import { looksRepetitive } from "./loopguard.ts";
 import { askGuard, rejectText, type Decision } from "./guard-client.ts";
 import { buildMessages, noHitsAnswer } from "./prompt.ts";
-import { retrieve, type RetrievedChunk } from "./retrieve.ts";
+import { retrieve, topKFromEnv, type RetrievedChunk } from "./retrieve.ts";
 
 /**
  * Modellen som skriver svaren, och reserven.
@@ -69,7 +70,16 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
 function explainFailure(error: unknown): string {
   const message = String((error as Error)?.message ?? error).toLowerCase();
 
-  if (message.includes("429") || message.includes("quota") || message.includes("limit")) {
+  // Workers AI svarar med kod 4006 och ord som "daily free allocation" när
+  // neuronkvoten är slut, inte med 429.
+  if (
+    message.includes("4006") ||
+    message.includes("allocation") ||
+    message.includes("neuron") ||
+    message.includes("429") ||
+    message.includes("quota") ||
+    message.includes("limit")
+  ) {
     return "Dagens gratiskvot för AI-svar är slut. Den återställs vid midnatt UTC.";
   }
   if (message.includes("capacity") || message.includes("overload")) {
@@ -139,6 +149,10 @@ function uniqueSources(chunks: RetrievedChunk[]) {
  * Workers AI svarar med SSE där varje rad ser ut som `data: {"response":"ord"}`.
  * Vi tolkar den strömmen och skickar om innehållet i vårt eget format, så att
  * webbläsaren kan visa svaret medan det skrivs i stället för att vänta på hela.
+ *
+ * `progress.sent` sätts så fort första ordet skickats. Anroparen behöver veta
+ * det: har modellen hunnit skriva något kan reserven inte ta över, eftersom
+ * dess svar då hamnar efter en halv mening från den första.
  */
 async function streamAnswer(
   env: Env,
@@ -147,6 +161,7 @@ async function streamAnswer(
   writer: WritableStreamDefaultWriter<Uint8Array>,
   encoder: TextEncoder,
   maxTokens: number,
+  progress: { sent: boolean },
 ): Promise<void> {
   // Typerna för AI.run täcker inte strömmande svar per modellnamn, därför
   // castet: med stream: true är returvärdet alltid en ReadableStream.
@@ -196,6 +211,7 @@ async function streamAnswer(
         if (text) {
           answer += text;
           await writer.write(encoder.encode(sse("token", text)));
+          progress.sent = true;
 
           if (looksRepetitive(answer)) {
             await reader.cancel();
@@ -252,10 +268,18 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
   // bakom sökningen. Utan GUARD_KEY blir svaret null direkt.
   const guarding = askGuard(env, question, history);
 
-  const { chunks } = await retrieve(env, question, {
-    searchText: retrievalQuery(question, history),
-    topK: Number(env.TOP_K ?? "8"),
-  });
+  let chunks: RetrievedChunk[];
+  try {
+    ({ chunks } = await retrieve(env, question, {
+      searchText: retrievalQuery(question, history),
+      topK: topKFromEnv(env.TOP_K),
+    }));
+  } catch (error) {
+    // Sökningen är första anropet till Workers AI. Är dagskvoten slut är det
+    // här det märks, och användaren ska få veta det i stället för ett 500.
+    console.log(`Sökningen misslyckades: ${(error as Error).message}`);
+    return jsonError(503, explainFailure(error));
+  }
 
   // Guarden svarar med ett beslut för vardera utfallet av sökningen, eftersom
   // den inte kunde veta det när den tillfrågades.
@@ -285,14 +309,18 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
     try {
       await writer.write(encoder.encode(sse("sources", uniqueSources(chunks))));
 
+      const progress = { sent: false };
       try {
-        await streamAnswer(env, PRIMARY_MODEL, messages, writer, encoder, maxTokens);
+        await streamAnswer(env, PRIMARY_MODEL, messages, writer, encoder, maxTokens, progress);
       } catch (primaryError) {
-        // Överbelastning, fel eller timeout hos 70B. Reserven kommer från en
-        // annan leverantör, se FALLBACK_MODEL.
+        // Har 70B redan skrivit en del av svaret går det inte att byta modell
+        // mitt i: felet går vidare och visas för användaren.
+        if (progress.sent) throw primaryError;
+        // Överbelastning, fel eller timeout hos 70B innan något skrivits.
+        // Reserven kommer från en annan leverantör, se FALLBACK_MODEL.
         console.log(`Primärmodellen misslyckades: ${(primaryError as Error).message}`);
         await writer.write(encoder.encode(sse("notice", "Svarar med reservmodellen.")));
-        await streamAnswer(env, FALLBACK_MODEL, messages, writer, encoder, maxTokens);
+        await streamAnswer(env, FALLBACK_MODEL, messages, writer, encoder, maxTokens, progress);
       }
 
       await writer.write(encoder.encode(sse("done", {})));
@@ -341,6 +369,12 @@ export default {
     // Workern behöver taggen satt här.
     const headers = new Headers(shell.headers);
     headers.set("x-robots-tag", "noindex, nofollow, noarchive, nosnippet");
+    // Samma skydd som public/_headers ger de statiska filerna: sidan får inte
+    // bäddas in på andra webbplatser, där ett lösenordsfält kunde luras fram.
+    headers.set("x-frame-options", "DENY");
+    headers.set("content-security-policy", "frame-ancestors 'none'");
+    headers.set("x-content-type-options", "nosniff");
+    headers.set("referrer-policy", "no-referrer");
     return new Response(shell.body, { status: shell.status, headers });
   },
 } satisfies ExportedHandler<Env>;

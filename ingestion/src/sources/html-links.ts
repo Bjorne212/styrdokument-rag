@@ -23,19 +23,44 @@ import { decodedPath, fetchText, fileName, type ArchiveDocument, type ArchiveSou
 /** <a ... href="..." ...>text</a>, med citattecken av båda sorterna. */
 const ANCHOR = /<a\b[^>]*?\bhref\s*=\s*(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gi;
 
+/**
+ * Namngivna entiteter som förekommer i länktexter på svenska webbplatser.
+ * Saknas en här visas den ordagrant i källhänvisningen, till exempel
+ * "Stadga f&ouml;r kåren".
+ */
 const ENTITIES: Record<string, string> = {
-  "&amp;": "&",
-  "&lt;": "<",
-  "&gt;": ">",
-  "&quot;": '"',
-  "&#39;": "'",
-  "&nbsp;": " ",
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+  shy: "",
+  aring: "å",
+  auml: "ä",
+  ouml: "ö",
+  Aring: "Å",
+  Auml: "Ä",
+  Ouml: "Ö",
+  eacute: "é",
+  Eacute: "É",
+  uuml: "ü",
+  ndash: "–",
+  mdash: "—",
+  hellip: "…",
+  lsquo: "‘",
+  rsquo: "’",
+  ldquo: "“",
+  rdquo: "”",
+  laquo: "«",
+  raquo: "»",
 };
 
 function decodeEntities(text: string): string {
   return text
-    .replace(/&(amp|lt|gt|quot|#39|nbsp);/g, (entity) => ENTITIES[entity] ?? entity)
-    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)));
+    .replace(/&([A-Za-z]+);/g, (entity, name: string) => ENTITIES[name] ?? entity)
+    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)));
 }
 
 /** Plockar ut alla PDF-länkar ur en HTML-sida. Exporterad för att kunna testas på en sträng. */
@@ -54,6 +79,9 @@ export function parseLinks(
     } catch {
       continue;
     }
+    // Bara webbadresser. En länk som "javascript:...pdf" eller "data:...pdf"
+    // skulle annars kunna hamna bland källorna som visas under svaren.
+    if (url.protocol !== "https:" && url.protocol !== "http:") continue;
     if (!/\.pdf$/i.test(url.pathname)) continue;
 
     url.hash = "";

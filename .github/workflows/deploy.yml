@@ -34,13 +34,13 @@ jobs:
   deploy:
     if: vars.CLOUDFLARE_ACCOUNT_ID != ''
     runs-on: ubuntu-latest
-    env:
-      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    # Cloudflare-nyckeln ges bara till stegen som deployar, inte till hela
+    # jobbet. Under npm ci kör beroendenas installationsskript, och de ska
+    # inte kunna läsa den.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "24"
 
@@ -53,14 +53,21 @@ jobs:
           npm ci
           npm run build:pages
 
+      - name: Installera Wrangler
+        working-directory: worker
+        run: npm ci
+
       - name: Deploya Workern
         working-directory: worker
-        run: |
-          npm ci
-          npx wrangler deploy
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx wrangler deploy
 
       - name: Sätt lösenordet
         env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           SHARED_PASSWORD: ${{ secrets.SHARED_PASSWORD }}
         if: env.SHARED_PASSWORD != ''
         working-directory: worker

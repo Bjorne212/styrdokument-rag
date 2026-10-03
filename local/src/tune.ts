@@ -63,7 +63,7 @@ async function measureOverlap(
   extracted: { doc: any; pages: string[] }[],
   targetChars: number,
 ): Promise<void> {
-  const { cleanPages } = await import("./chunk.ts");
+  const { cleanPages } = await import("../../ingestion/src/chunk.ts");
 
   // Bygg stickprovet: varje 40:e intilliggande radpar, jämnt fördelat över
   // hela arkivet. Deterministiskt, så siffrorna går att jämföra mellan körningar.

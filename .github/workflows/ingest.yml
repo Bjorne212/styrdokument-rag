@@ -41,9 +41,9 @@ jobs:
     if: vars.CLOUDFLARE_ACCOUNT_ID != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "24"
           cache: npm
@@ -60,7 +60,10 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node src/ingest.ts ${{ inputs.force && '--force' || '' }}
 
+      # Körs även när indexeringen markerats som misslyckad: ett dokument som
+      # inte gick att läsa stoppar inte resten, och det som lyckades ska sparas.
       - name: Spara manifestet
+        if: ${{ !cancelled() }}
         run: |
           # status i stället för diff: vid första körningen är manifestet en
           # ny, ospårad fil, och den syns inte i git diff.

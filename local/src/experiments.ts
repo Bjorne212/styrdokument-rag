@@ -17,7 +17,7 @@ import { chunkDocument, embeddingText, type Chunk } from "../../ingestion/src/ch
 import { EMBEDDING_DIMENSIONS, embedTexts } from "./embeddings.ts";
 import { extractDocument } from "../../ingestion/src/extract.ts";
 import { scrapeArchive } from "../../ingestion/src/scrape.ts";
-import { loadQuestions, meanReciprocalRank, rankOf, type EvalQuestion } from "./evalcore.ts";
+import { loadQuestions, rankOf } from "./evalcore.ts";
 import { search, type LocalIndex } from "./localindex.ts";
 
 const TOP_K = 8;

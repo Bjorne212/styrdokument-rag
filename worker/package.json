@@ -11,7 +11,7 @@
     "predeploy": "node ../scripts/configure.mjs",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
-    "test": "node --test test/*.test.ts",
+    "test": "node --test --test-isolation=none test/*.test.ts",
     "pretypes": "node ../scripts/configure.mjs",
     "types": "wrangler types"
   },

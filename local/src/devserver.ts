@@ -251,7 +251,9 @@ async function main(): Promise<void> {
     serve(filePath, !extname(safe));
   });
 
-  server.listen(PORT, () => {
+  // Bara den egna datorn: lösenordet är "lokalt" om inget annat satts, och
+  // andra på samma nätverk ska inte kunna nå chatten.
+  server.listen(PORT, "127.0.0.1", () => {
     console.log(`Lokal chatt:  http://localhost:${PORT}`);
     console.log(`Modell:       ${model}`);
     console.log(`Index:        ${index.entries.length} chunkar`);

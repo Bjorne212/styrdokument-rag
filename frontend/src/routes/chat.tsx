@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useChat, type Message } from "../lib/use-chat";
 import type { Source } from "../lib/chat-api";
 import logo from "@kar/logo.png";
-import { kar } from "../../../shared/config";
+import { guardrailsConfigured, kar } from "../../../shared/config";
 
 const STORAGE_KEY = `${kar.id}-password`;
 const MAX_LENGTH = 1000;
@@ -17,14 +17,12 @@ export const Route = createFileRoute("/chat")({
       { title: `Chatt – ${kar.botName}` },
       {
         name: "description",
-        content:
-          `Ställ frågor om ${kar.nameGenitive} styrdokument och få svar med källhänvisningar. Inget sparas mellan besöken.`,
+        content: `Ställ frågor om ${kar.nameGenitive} styrdokument och få svar med källhänvisningar. Inget sparas mellan besöken.`,
       },
       { property: "og:title", content: `Chatt – ${kar.botName}` },
       {
         property: "og:description",
-        content:
-          `Ställ frågor om ${kar.nameGenitive} styrdokument och få svar med källhänvisningar. Inget sparas mellan besöken.`,
+        content: `Ställ frågor om ${kar.nameGenitive} styrdokument och få svar med källhänvisningar. Inget sparas mellan besöken.`,
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -63,13 +61,11 @@ function ChatPage() {
       <header className="border-b border-hero-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <Link to="/" className="transition-opacity hover:opacity-80">
-            <img
-              src={logo}
-              alt={kar.name}
-              className="h-7 w-auto"
-            />
+            <img src={logo} alt={kar.name} className="h-7 w-auto" />
           </Link>
-          <span className="text-xs font-light text-hero-muted">Inget sparas</span>
+          <span className="text-xs font-light text-hero-muted">
+            {guardrailsConfigured ? "Skriv inga personuppgifter" : "Inget sparas"}
+          </span>
         </div>
       </header>
 

@@ -99,7 +99,9 @@ export async function askGuard(env: Env, question: string, history: Exchange[]):
 
   // GUARD_URL i miljön går före, för tester och lokal utveckling mot en
   // guard på den egna datorn. I drift kommer adressen från kar.config.json.
-  const url = env.GUARD_URL ?? kar.guardrails?.url ?? "";
+  // || och inte ??: en tom GUARD_URL = "" i wrangler.toml ska inte skugga
+  // adressen i kar.config.json.
+  const url = env.GUARD_URL || kar.guardrails?.url || "";
   if (!isSafeGuardUrl(url)) {
     console.log("Guardrails: GUARD_KEY finns men guardrails.url saknas eller är inte https. Frågan behandlas som FILTERED.");
     return FAIL_SAFE_RESPONSE;

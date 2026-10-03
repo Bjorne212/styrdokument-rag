@@ -87,3 +87,12 @@ export type KarConfig = {
 };
 
 export const kar = raw as KarConfig;
+
+/**
+ * Är guardrails-tillägget inställt för kåren?
+ *
+ * Gränssnittet anpassar sina löften om integritet efter det: med tillägget
+ * skickas frågorna vidare för bedömning innan svaret skrivs. Nyckeln är en
+ * secret som gränssnittet inte ser, så adressen är det som avgör.
+ */
+export const guardrailsConfigured = Boolean(kar.guardrails?.url);

@@ -19,6 +19,7 @@ worker/wrangler.toml
 # Nedladdade PDF:er och mellanliggande data (hämtas alltid om från källan)
 ingestion/cache/
 ingestion/out/
+local/out/
 
 # Hemligheter, ska ALDRIG committas
 .dev.vars

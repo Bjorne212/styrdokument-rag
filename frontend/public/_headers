@@ -3,5 +3,12 @@
 # X-Robots-Tag gör samma sak som en noindex-metatagg, men gäller varje svar
 # även bilder, typsnitt och robots.txt, som inte kan bära en metatagg. Den
 # täcker också robotar som struntar i robots.txt.
+#
+# Övriga rader hindrar att sidan bäddas in på andra webbplatser, där
+# lösenordsfältet kunde luras fram, och att webbläsaren gissar filtyper.
 /*
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer

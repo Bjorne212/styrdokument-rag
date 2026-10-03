@@ -34,7 +34,7 @@ import {
   type VectorRecord,
 } from "./cloudflare.ts";
 import { chunkDocument, embeddingText } from "./chunk.ts";
-import { extractDocument } from "./extract.ts";
+import { extractDocument, type ExtractedDocument } from "./extract.ts";
 import { scrapeArchive, type ArchiveDocument } from "./scrape.ts";
 import { source } from "./sources/index.ts";
 import { loadSkipList } from "./skiplist.ts";
@@ -87,7 +87,23 @@ async function loadManifest(): Promise<Manifest> {
   }
 }
 
-async function saveManifest(manifest: Manifest): Promise<void> {
+/** Manifestets innehåll utan tidsstämpeln, för att se om något ändrats. */
+function contentOf(manifest: Manifest): string {
+  return JSON.stringify({ ...manifest, updatedAt: null });
+}
+
+/**
+ * Skriver manifestet, men bara om innehållet ändrats.
+ *
+ * Med en ny tidsstämpel vid varje körning blev filen alltid ändrad, och
+ * workflowet committade "uppdatera dokumentmanifest" var sjätte timme utan att
+ * något hänt i arkivet.
+ */
+async function saveManifest(manifest: Manifest, contentBefore: string): Promise<void> {
+  if (contentOf(manifest) === contentBefore) {
+    console.log("Manifestet oförändrat.");
+    return;
+  }
   manifest.updatedAt = new Date().toISOString();
   await writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n", "utf8");
 }
@@ -102,7 +118,7 @@ function batched<T>(items: T[], size: number): T[][] {
 }
 
 /**
- * Bygger vektorer för ett dokument: extrahera text, chunka, embedda.
+ * Bygger vektorer för ett redan extraherat dokument: chunka och embedda.
  *
  * Chunkens text följer med som metadata. Vectorize returnerar metadatan vid
  * sökning, så Workern får själva texten direkt ur sökträffen och behöver
@@ -111,8 +127,8 @@ function batched<T>(items: T[], size: number): T[][] {
 async function vectorsForDocument(
   config: CloudflareConfig,
   doc: ArchiveDocument,
-): Promise<{ vectors: VectorRecord[]; sha256: string }> {
-  const extracted = await extractDocument(doc);
+  extracted: ExtractedDocument,
+): Promise<VectorRecord[]> {
   const chunks = chunkDocument(doc, extracted.pages);
   const vectors: VectorRecord[] = [];
 
@@ -132,7 +148,7 @@ async function vectorsForDocument(
     });
   }
 
-  return { vectors, sha256: extracted.sha256 };
+  return vectors;
 }
 
 async function main(): Promise<void> {
@@ -142,6 +158,7 @@ async function main(): Promise<void> {
   const prune = args.includes("--prune");
 
   const manifest = await loadManifest();
+  const contentBefore = contentOf(manifest);
 
   // Översättningar av dokument som redan finns i indexet utelämnas. Ett
   // dokument som hamnar på listan i efterhand behandlas som borttaget, så dess
@@ -175,7 +192,7 @@ async function main(): Promise<void> {
       await deleteVectors(config, batch);
     }
 
-    await saveManifest(manifest);
+    await saveManifest(manifest, contentBefore);
     console.log("Klart. Inga neurons förbrukade.");
     return;
   }
@@ -234,36 +251,52 @@ async function main(): Promise<void> {
   let unchanged = 0;
   const toDelete = [...staleVectorIds];
 
+  // Ett dokument som inte går att hämta eller läsa får inte stoppa resten:
+  // då sparades inget manifest, allt som hunnit laddas upp embeddades om vid
+  // nästa körning, och körningen fastnade på samma dokument var sjätte timme.
+  // Det hoppas över och syns som en varning, och nästa körning försöker igen.
+  const failures: string[] = [];
+
   for (const doc of candidates) {
     const known = manifest.documents[doc.id];
-    const { vectors, sha256 } = await vectorsForDocument(config, doc);
+    try {
+      // Innehållet jämförs innan något embeddas. Annars kostade varje
+      // dokument i en ändrad sektion neurons, även de som var oförändrade.
+      const extracted = await extractDocument(doc);
+      if (known && known.sha256 === extracted.sha256 && !force) {
+        unchanged++;
+        continue;
+      }
 
-    if (known && known.sha256 === sha256 && !force) {
-      unchanged++;
-      continue;
+      const vectors = await vectorsForDocument(config, doc, extracted);
+      for (const batch of batched(vectors, UPSERT_BATCH)) {
+        await upsertVectors(config, batch);
+      }
+
+      // Blev dokumentet kortare har det färre chunkar än förut. De överblivna
+      // id:na måste bort, annars ligger gammal text kvar och kan bli sökträff.
+      // Först efter uppladdningen, så att ett avbrott inte lämnar hål.
+      if (known) {
+        const newIds = new Set(vectors.map((vector) => vector.id));
+        toDelete.push(...known.chunkIds.filter((id) => !newIds.has(id)));
+      }
+
+      manifest.documents[doc.id] = {
+        sha256: extracted.sha256,
+        uploaded: doc.uploaded,
+        title: doc.title,
+        url: doc.url,
+        chunkIds: vectors.map((vector) => vector.id),
+      };
+
+      updated++;
+      console.log(`  uppdaterade ${doc.id} (${vectors.length} chunkar)`);
+    } catch (error) {
+      const message = `${doc.id}: ${(error as Error).message}`;
+      failures.push(message);
+      // Formatet syns som en varning i GitHub Actions.
+      console.log(`::warning::Kunde inte indexera ${message}`);
     }
-
-    // Blev dokumentet kortare har det färre chunkar än förut. De överblivna
-    // id:na måste bort, annars ligger gammal text kvar och kan bli sökträff.
-    if (known) {
-      const newIds = new Set(vectors.map((vector) => vector.id));
-      toDelete.push(...known.chunkIds.filter((id) => !newIds.has(id)));
-    }
-
-    for (const batch of batched(vectors, UPSERT_BATCH)) {
-      await upsertVectors(config, batch);
-    }
-
-    manifest.documents[doc.id] = {
-      sha256,
-      uploaded: doc.uploaded,
-      title: doc.title,
-      url: doc.url,
-      chunkIds: vectors.map((vector) => vector.id),
-    };
-
-    updated++;
-    console.log(`  uppdaterade ${doc.id} (${vectors.length} chunkar)`);
   }
 
   for (const id of removed) {
@@ -281,7 +314,7 @@ async function main(): Promise<void> {
     manifest.sections[section] = { etag: etags.get(section) ?? null };
   }
 
-  await saveManifest(manifest);
+  await saveManifest(manifest, contentBefore);
 
   console.log("\nKlart.");
   console.log(`  Uppdaterade dokument:  ${updated}`);
@@ -289,6 +322,14 @@ async function main(): Promise<void> {
   console.log(`  Borttagna dokument:    ${removed.length}`);
   console.log(`  Borttagna vektorer:    ${toDelete.length}`);
   console.log(`  Dokument i indexet:    ${Object.keys(manifest.documents).length}`);
+
+  if (failures.length) {
+    console.error(`\n${failures.length} dokument kunde inte indexeras:`);
+    for (const failure of failures) console.error(`  ${failure}`);
+    // Körningen markeras som misslyckad så att det syns, men först efter att
+    // manifestet sparats, så att det som lyckades inte görs om.
+    process.exitCode = 1;
+  }
 }
 
 if (import.meta.filename === process.argv[1]) {

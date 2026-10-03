@@ -20,6 +20,17 @@ export const EMBEDDING_MODEL = "@cf/baai/bge-m3";
 export const TOP_K = 8;
 
 /**
+ * Antal stycken ur TOP_K i wrangler.toml, inom det Vectorize tillåter.
+ *
+ * Vectorize returnerar högst 50 träffar när metadata följer med. Ett
+ * felskrivet värde ska ge standardvärdet, inte ett fel vid varje fråga.
+ */
+export function topKFromEnv(value: string | undefined): number {
+  const n = Math.floor(Number(value));
+  return Number.isFinite(n) && n >= 1 ? Math.min(n, 50) : TOP_K;
+}
+
+/**
  * Under det här poängvärdet är träffen troligen irrelevant och tas bort.
  *
  * Exporterad för att den lokala utvecklingsservern ska kunna använda samma

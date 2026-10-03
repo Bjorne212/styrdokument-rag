@@ -15,7 +15,8 @@
     "prune": "node --env-file=.env src/ingest.ts --prune",
     "search": "node --env-file=.env src/search.ts",
     "scrape": "node src/scrape.ts",
-    "scrape:verify": "node src/scrape.ts --verify"
+    "scrape:verify": "node src/scrape.ts --verify",
+    "test": "node --test --test-isolation=none test/*.test.ts"
   },
   "dependencies": {
     "unpdf": "^1.8.1"

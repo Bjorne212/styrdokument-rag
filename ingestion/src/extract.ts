@@ -42,6 +42,12 @@ export async function fetchPdf(doc: ArchiveDocument): Promise<Uint8Array> {
     // Inte cachad ännu: hämta från arkivet.
   }
 
+  // Alla källtyper hämtar via den här funktionen. Bara webbadresser godtas,
+  // oavsett vad en arkivsida eller en handskriven lista innehåller.
+  if (!/^https?:\/\//i.test(doc.url)) {
+    throw new Error(`Inte en webbadress: ${doc.url}`);
+  }
+
   const response = await fetch(doc.url, {
     headers: { "user-agent": USER_AGENT },
   });
