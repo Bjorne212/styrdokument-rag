@@ -6,7 +6,15 @@ permalink: /konfiguration/
 
 # Konfiguration
 
-Allt som skiljer en kår från en annan står i `kar.config.json` i repots rot. Indexeringen, Workern och gränssnittet läser samma fil via `shared/config.ts`, så ett namn ändras på ett ställe och slår igenom överallt.
+Allt som skiljer en kår från en annan ligger i mappen `kar/`. Inställningarna står i `kar/kar.config.json`, som indexeringen, Workern och gränssnittet läser via `shared/config.ts`, så ett namn ändras på ett ställe och slår igenom överallt.
+
+| Fil i `kar/` | Innehåll |
+|---|---|
+| `kar.config.json` | Inställningarna, se nedan |
+| `logo.png`, `favicon.png`, `theme.css` | Utseendet, se [Utseende](#utseende) |
+| `eval/questions.json` | Utvärderingsfrågor med facit, se [Utvärdering](../utvardering/) |
+| `duplicates.json` | Översättningar som inte indexeras, se [Utvärdering](../utvardering/) |
+| `manifest.json` | Skrivs av indexeringen, skapas vid första körningen |
 
 Kör alltid det här efter en ändring:
 
@@ -14,7 +22,7 @@ Kör alltid det här efter en ändring:
 node scripts/configure.mjs
 ```
 
-Skriptet kontrollerar att filen är komplett och skriver över Workerns namn och indexets namn till `worker/wrangler.toml`, som inte kan läsa JSON själv. Deploy-jobbet kör det automatiskt, men det är bra att fånga fel innan man pushar.
+Skriptet kontrollerar att filen är komplett och skriver `worker/wrangler.toml` ur `worker/wrangler.template.toml`, med Workerns och indexets namn. Wrangler kan inte läsa JSON själv. `wrangler.toml` checkas inte in. Deploy-jobbet och Workerns `dev`- och `deploy`-skript kör skriptet automatiskt, men det är bra att fånga fel innan man pushar.
 
 ## Fälten
 
@@ -35,6 +43,11 @@ Skriptet kontrollerar att filen är komplett och skriver över Workerns namn och
   "cleanup": {
     "boilerplate": ["Postadress LinTek", "Org.nr 822001-0683"],
     "swedishMarkers": ["kårfullmäktige", "LinTeks"]
+  },
+  "guardrails": {
+    "refusal": "Jag kan bara svara på frågor om LinTeks styrdokument ...",
+    "greeting": "Hej! Fråga mig om LinTeks styrdokument ...",
+    "meta": "Jag är en chattbot som söker i LinTeks publicerade styrdokument ..."
   }
 }
 ```
@@ -53,6 +66,7 @@ Skriptet kontrollerar att filen är komplett och skriver över Workerns namn och
 | `source` | Var dokumenten finns och hur de läses. Se nästa avsnitt. |
 | `cleanup.boilerplate` | Textbitar ur sidhuvud och sidfot. Varje rad som *innehåller* någon av dem tas bort före indexering. |
 | `cleanup.swedishMarkers` | Extra ord som bara förekommer i svensk text. Används för att märka varje stycke som svenska eller engelska. |
+| `guardrails` | Valfritt. Färdiga texter för guardrails-tillägget: `refusal` (frågor utanför ämnet och försök att få boten att bryta sina regler), `greeting` (hälsningar och tack) och `meta` (frågor om boten själv). Ingen av dem ska avslöja varför en fråga avvisades. `url` är guardens adress, som följer med tillägget; utan den är tillägget avstängt. Se [Arkitektur](../arkitektur/#guardrails-tillägget). |
 
 > Byt inte sektionernas `id` i efterhand. Id:t ingår i varje dokuments identitet, så en ändring gör att alla dokument i sektionen ser nya ut och indexeras om, medan de gamla vektorerna tas bort. Det fungerar men kostar kvot i onödan.
 
@@ -74,7 +88,7 @@ Det vanligaste fallet. Varje sektion är en webbsida, och varje `<a href>` på s
 }
 ```
 
-Har kåren alla dokument på en sida räcker en sektion. Relativa länkar (`pdf/stadga.pdf`, `/filer/stadga.pdf`) löses mot sidans adress.
+Har kåren alla dokument på en sida räcker en sektion. Relativa länkar (`pdf/stadga.pdf`, `/filer/stadga.pdf`) löses mot sidans adress. Bara `http`- och `https`-länkar räknas, och HTML-entiteter som `&ouml;` i länktexten avkodas.
 
 **Ändringskontroll:** en hash av sidans HTML. Läggs ett dokument till eller tas bort ändras sidan. Byts en PDF ut under exakt samma filnamn märks det först när sidan ändras på annat sätt; kör då **Indexera styrdokument** med *force* ikryssat.
 
@@ -143,27 +157,28 @@ type ArchiveSource = {
 
 Ett dokuments `id` ska vara stabilt mellan körningar, eftersom vektorernas id:n räknas fram ur det. Konventionen är `<sektion>/<sökväg>`.
 
-## Utseende
+## Utseende {#utseende}
 
-Gränssnittet hämtar alla texter om kåren ur konfigurationen. Tre saker ligger som filer:
+Gränssnittet hämtar alla texter om kåren ur konfigurationen. Tre saker ligger som filer i `kar/`:
 
 | Fil | Innehåll |
 |---|---|
-| `frontend/src/assets/logo.png` | Loggan. Visas mot mörk bakgrund, så en ljus eller vit variant fungerar bäst. |
-| `frontend/public/favicon.png` | Flikikonen. |
-| `frontend/src/styles.css` | Färgerna. `--primary` styr knappar och länkar, `--hero-glow-1` och `--hero-glow-2` den tonade bakgrunden på startsidan. Färgerna skrivs i `oklch`; [oklch.com](https://oklch.com) räknar om från hex. |
+| `kar/logo.png` | Loggan. Visas mot mörk bakgrund på både startsidan och i chatten, så en ljus eller vit variant med transparent bakgrund fungerar bäst. Minst 800 px bred. |
+| `kar/favicon.png` | Flikikonen, 64 × 64. |
+| `kar/theme.css` | Färgerna, som läses in efter appens neutrala standardfärger. `--primary` styr knappar och länkar, `--hero-bg` och `--hero-surface` den mörka bakgrunden, `--hero-glow-1` och `--hero-glow-2` glöden bakom rubriken. Färgerna skrivs i `oklch`; [oklch.com](https://oklch.com) räknar om från hex. Vit text på `--primary` bör ha minst 4,5:1 i kontrast. |
 
-Typsnittet D-DIN ligger lokalt i `frontend/public/fonts/` och får spridas vidare (SIL OFL). Det serveras från samma adress som sidan, så att ingen besökare kontaktar en tredje part.
+Typsnittet D-DIN ligger lokalt i `frontend/public/fonts/` och får spridas vidare (SIL OFL). Det serveras från samma adress som sidan, så att ingen besökare kontaktar en tredje part. Typsnittet är gemensamt för alla kårer.
 
 ## Justerbara värden i Workern
 
-I `worker/wrangler.toml` under `[vars]`. Ändras utan kodändring, slår igenom vid nästa deploy.
+I `worker/wrangler.template.toml` under `[vars]`. Ändras utan kodändring och slår igenom vid nästa deploy. Filen är gemensam med mallen, så en ändring i en kårs klon kan ge konflikter vid nästa uppdatering från mallen.
 
 | Variabel | Standard | Betydelse |
 |---|---|---|
-| `TOP_K` | `8` | Antal stycken som hämtas och skickas till modellen. Fler ger bättre täckning men kostar mer kvot per fråga. |
+| `TOP_K` | `8` | Antal stycken som hämtas och skickas till modellen. Fler ger bättre täckning men kostar mer kvot per fråga. Högst 50. |
 | `HISTORY_TURNS` | `2` | Antal tidigare fråga/svar-par som följer med en följdfråga. `0` stänger av följdfrågor. |
 | `HISTORY_ANSWER_CHARS` | `500` | Hur mycket av ett tidigare svar som skickas med. |
+| `GUARD_TIMEOUT_MS` | `2500` | Hur länge Workern väntar på guardrails-tjänsten innan frågan behandlas som `FILTERED`. |
 
 Lösenordet sätts som secret, aldrig här. Se [Drift](../drift/#resurser).
 
@@ -171,4 +186,4 @@ Lösenordet sätts som secret, aldrig här. Se [Drift](../drift/#resurser).
 
 Prompten ligger i `worker/src/prompt.ts` och är gemensam för alla kårer. Den kräver att modellen bara svarar ur de hämtade styckena, säger ifrån när svaret saknas, hänvisar till dokument och avsnitt, och svarar på frågans språk. Kårens namn och beskrivning fylls i från konfigurationen.
 
-Vill en kår ändra tonen eller lägga till regler görs det i den filen. Mät med utvärderingen före och efter, se [Utvärdering](../utvardering/).
+Vill en kår ändra tonen eller lägga till regler görs det i den filen, men det är gemensam kod: gör ändringen i mallen så att den inte krockar med nästa uppdatering. Mät med utvärderingen före och efter, se [Utvärdering](../utvardering/).

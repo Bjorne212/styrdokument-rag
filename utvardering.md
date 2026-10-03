@@ -10,7 +10,7 @@ Svarens kvalitet avgörs mycket mer av **sökningen** än av språkmodellen. Hit
 
 ## Frågor med facit
 
-`eval/questions.json` innehåller frågor där svaret är känt. Varje fråga har fraser som måste finnas i ett hämtat stycke och dokument som stycket måste komma ifrån:
+`kar/eval/questions.json` innehåller frågor där svaret är känt. Varje fråga har fraser som måste finnas i ett hämtat stycke och dokument som stycket måste komma ifrån:
 
 ```json
 {
@@ -85,4 +85,4 @@ node src/localindex.ts
 node src/duplicates.ts --threshold 0.75
 ```
 
-Resultatet skrivs till `ingestion/duplicates.json`. Läs igenom paren innan du committar. Filen är avsiktligt lätt att redigera för hand: ta bort ett par som blivit fel. Nästa indexering tar bort vektorerna för dokumenten i `skip`.
+Resultatet skrivs till `kar/duplicates.json`. Läs igenom paren innan du committar. Filen är avsiktligt lätt att redigera för hand: ta bort ett par som blivit fel. Nästa indexering tar bort vektorerna för dokumenten i `skip`.

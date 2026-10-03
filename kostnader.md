@@ -38,14 +38,14 @@ En typisk fråga i LinTeks bot:
 
 Det är de åtta dokumentstyckena som kostar mest, inte svaret. Därför är antalet stycken (`TOP_K`) och hur mycket historik som skickas med (`HISTORY_TURNS`) de två rattarna som påverkar kostnaden mest, se [Sänka förbrukningen](#sanka).
 
-**10 000 neurons per dygn räcker alltså till ungefär 80 frågor**, delat av alla användare. Långa svar och följdfrågor med historik drar mer, korta frågor mindre.
+**10 000 neurons per dygn räcker alltså till ungefär 80 frågor**, delat av alla användare. Långa svar och följdfrågor med historik drar mer, korta frågor mindre. En fråga där sökningen inte hittar något i dokumenten kostar bara embeddingen, eftersom Workern då svarar själv utan språkmodellen.
 
 Priser per miljon tokens för modellerna boten använder:
 
 | Modell | Roll | In | Ut |
 |---|---|---|---|
 | `@cf/meta/llama-3.3-70b-instruct-fp8-fast` | Svar | 26 668 neurons (0,293 USD) | 204 805 neurons (2,253 USD) |
-| `@cf/meta/llama-3.1-8b-instruct` | Reserv | 25 608 neurons (0,282 USD) | 75 147 neurons (0,827 USD) |
+| `@cf/mistralai/mistral-small-3.1-24b-instruct` | Reserv | 31 876 neurons (0,351 USD) | 50 488 neurons (0,555 USD) |
 | `@cf/baai/bge-m3` | Embeddings | 1 075 neurons (0,012 USD) | |
 
 ## Vad indexeringen kostar
@@ -64,7 +64,7 @@ Indexeringen använder bara embeddingmodellen, som är ungefär 25 gånger billi
 
 Kvoten på 10 000 neurons nollställs vid midnatt UTC (klockan 01 eller 02 svensk tid).
 
-**På Cloudflares gratisplan** slutar modellerna svara när kvoten är förbrukad. Workern försöker då med den mindre reservmodellen, men den drar från samma kvot. När kvoten är helt slut får användaren meddelandet "Dagens gratiskvot för AI-svar är slut. Den återställs vid midnatt UTC." Ingenting debiteras.
+**På Cloudflares gratisplan** slutar alla modeller svara när kvoten är förbrukad, även reservmodellen. Användaren får meddelandet "Dagens gratiskvot för AI-svar är slut. Den återställs vid midnatt UTC." Ingenting debiteras.
 
 **På Workers Paid** fortsätter allt att fungera, och förbrukningen över 10 000 neurons per dygn faktureras i efterhand.
 
@@ -101,10 +101,14 @@ Om kvoten inte räcker, i ordning från minst till mest påverkan på svaren:
 
 | Åtgärd | Var | Effekt |
 |---|---|---|
-| Stäng av följdfrågor | `HISTORY_TURNS = "0"` i `worker/wrangler.toml` | Sparar upp till omkring 10 neurons per följdfråga. Korta frågor som "vad gör den?" slutar fungera. |
+| Stäng av följdfrågor | `HISTORY_TURNS = "0"` i `worker/wrangler.template.toml` | Sparar upp till omkring 10 neurons per följdfråga. Korta frågor som "vad gör den?" slutar fungera. |
 | Kortare historik | `HISTORY_ANSWER_CHARS` | Mindre besparing, mindre påverkan |
 | Färre stycken per fråga | `TOP_K`, till exempel `"5"` | Omkring 30 neurons mindre per fråga, alltså cirka 30 % fler frågor per dygn. Svaren hittar oftare fel eller inget. Mät med [utvärderingen](../utvardering/) först. |
 | Byt till Workers Paid | Cloudflare-dashboarden | Ingen påverkan på svaren. Omkring 55 kr i månaden plus förbrukning. |
+
+## Guardrails-tillägget
+
+Bedömningen av frågorna görs av guard-tjänsten och kostar inget av kårens kvot. Frågor som avvisas eller besvaras med en färdig text (hälsningar, frågor om boten, frågor utanför ämnet) anropar inte språkmodellen alls och sparar därmed omkring 100 neurons var. Försiktiga svar är kortare, högst 400 tokens.
 
 ## Följa förbrukningen
 

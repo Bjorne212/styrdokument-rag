@@ -55,7 +55,7 @@ Med källtypen `html-links` upptäcks ändringar genom att sidan med länkarna �
 
 - **Nytt dokument:** publicera det i arkivet. Nästa indexering tar med det.
 - **Upphävt dokument:** ta bort det ur arkivet. Nästa indexering tar bort dess stycken ur boten.
-- **Ny sektion** (till exempel en ny sida för "Reglementen för utskott"): lägg till den i `source.sections` i `kar.config.json`. Det kräver en ändring i repot, inte bara i arkivet.
+- **Ny sektion** (till exempel en ny sida för "Reglementen för utskott"): lägg till den i `source.sections` i `kar/kar.config.json`. Det kräver en ändring i repot, inte bara i arkivet.
 
 ## Så blir PDF:en läsbar
 
@@ -70,11 +70,11 @@ Boten läser texten i PDF:en, inte bilden av den. Hur dokumentet är gjort påve
 
 Snabbtest: öppna PDF:en och försök markera en mening med musen. Går det inte saknas textlager.
 
-**Ny sidfot eller ny mall?** Rader som står på varje sida (adress, organisationsnummer, "Sida 3 av 12") rensas bort med hjälp av listan `cleanup.boilerplate` i `kar.config.json`. Byter kåren dokumentmall med en ny sidfot, lägg till textbitarna där. Annars blir sidfoten den mest förekommande texten i hela indexet.
+**Ny sidfot eller ny mall?** Rader som står på varje sida (adress, organisationsnummer, "Sida 3 av 12") rensas bort med hjälp av listan `cleanup.boilerplate` i `kar/kar.config.json`. Byter kåren dokumentmall med en ny sidfot, lägg till textbitarna där. Annars blir sidfoten den mest förekommande texten i hela indexet.
 
 ## Svenska och engelska versioner
 
-Finns samma dokument på både svenska och engelska tävlar versionerna om samma platser i svaret, och boten kan citera samma regel två gånger. Översättningar hoppas därför över med hjälp av listan `ingestion/duplicates.json`.
+Finns samma dokument på både svenska och engelska tävlar versionerna om samma platser i svaret, och boten kan citera samma regel två gånger. Översättningar hoppas därför över med hjälp av listan `kar/duplicates.json`.
 
 När en ny översättning publiceras, lägg till dess id i `skip`:
 
@@ -87,7 +87,7 @@ När en ny översättning publiceras, lägg till dess id i `skip`:
 }
 ```
 
-Id:t är sektionens id, ett snedstreck och filens sökväg som den står i `ingestion/manifest.json`. För många nya översättningar samtidigt går det att köra den automatiska dubblettanalysen, se [Utvärdering](../utvardering/#dubbletter).
+Id:t är sektionens id, ett snedstreck och filens sökväg som den står i `kar/manifest.json`. För många nya översättningar samtidigt går det att köra den automatiska dubblettanalysen, se [Utvärdering](../utvardering/#dubbletter).
 
 ## Kontrollera att boten har rätt version
 
@@ -95,7 +95,7 @@ Tre ställen, från snabbast till mest detaljerat:
 
 1. **Fråga boten.** Ställ en fråga vars svar bara står i den nya versionen och kontrollera att källan som visas ovanför svaret är rätt dokument.
 2. **Loggen från körningen.** Under *Actions → Indexera styrdokument →* senaste körningen står varje dokument som uppdaterats (`uppdaterade allmant/pdf/Reglemente.pdf (42 chunkar)`) eller tagits bort (`tog bort ...`).
-3. **`ingestion/manifest.json`** i repot. Här står varje dokument som finns i boten, med titel, adress, uppladdningsdatum och en hash av filen. Saknas ett dokument här finns det inte i boten.
+3. **`kar/manifest.json`** i repot. Här står varje dokument som finns i boten, med titel, adress, uppladdningsdatum och en hash av filen. Saknas ett dokument här finns det inte i boten.
 
 ## Checklista efter ett kårfullmäktige {#checklista}
 

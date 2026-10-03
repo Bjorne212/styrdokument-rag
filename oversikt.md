@@ -8,7 +8,7 @@ permalink: /oversikt/
 
 <p class="lead">Styrdokumentsboten svarar på frågor om en kårs styrdokument: stadga, reglemente, policyer, riktlinjer och verksamhetsplaner. Svaren bygger enbart på dokumenten och hänvisar alltid till källan.</p>
 
-Projektet började som [LinTeks styrdokumentsbot](https://github.com/Bjorne212/linus) och är nu en mall som vilken kår som helst kan använda. Allt som är specifikt för en kår står i en enda fil, `kar.config.json`. Resten av koden är gemensam. Hela systemet ryms i GitHubs och Cloudflares gratisnivåer.
+Projektet började som LinTeks styrdokumentsbot och är nu en mall som vilken kår som helst kan använda. Allt som är specifikt för en kår ligger i en mapp, `kar/`. Resten av koden är gemensam, och kåren hämtar förbättringar från mallen med git. Hela systemet ryms i GitHubs och Cloudflares gratisnivåer.
 
 ## Grundidén
 
@@ -39,11 +39,13 @@ Webbläsaren
    │  POST /api/chat  { question, history }
    ▼
 Cloudflare Worker
-   │  1. Kontrollera lösenordet (konstant tid)
+   │  1. Kontrollera lösenordet (konstant tid) och taket för antal frågor
    │  2. Gör om frågan till en vektor (bge-m3)
    │  3. Hämta de 8 närmaste styckena ur Vectorize
-   │  4. Bygg en prompt som förbjuder svar utanför styckena
-   │  5. Strömma svaret tillbaka, källorna först
+   │     (med guardrails-tillägget: fråga guarden samtidigt)
+   │  4. Inget hittat: svara det direkt, utan språkmodellen
+   │  5. Bygg en prompt där styckena och frågan är avgränsat material
+   │  6. Strömma svaret tillbaka, källorna först
    ▼
 Webbläsaren visar svaret medan det skrivs, med länkar till PDF:erna
 ```
@@ -61,7 +63,7 @@ Workern läser alltid det som ligger i indexet just då. En ändring i arkivet s
 
 ## Integritet
 
-Ingenting sparas. Inga konton, ingen chatthistorik på servern, inga IP-adresser, inga loggar av frågor eller svar. Workern har ingen databas att skriva till. Följdfrågor fungerar ändå, eftersom webbläsaren skickar med de senaste utbytena i varje anrop. Mer i [Drift](../drift/#integritet).
+Chatboten sparar ingenting. Inga konton, ingen chatthistorik på servern, inga IP-adresser, inga loggar av frågor eller svar. Workern har ingen databas att skriva till. Följdfrågor fungerar ändå, eftersom webbläsaren skickar med de senaste utbytena i varje anrop. Med guardrails-tillägget bedöms frågorna dessutom av en separat tjänst innan svaret skrivs. Mer i [Drift](../drift/#integritet).
 
 ## Dokumentationen
 
@@ -70,6 +72,6 @@ Ingenting sparas. Inga konton, ingen chatthistorik på servern, inga IP-adresser
 | [Hålla dokumenten korrekta](../uppdatera/) | Hur nya och ändrade PDF:er når boten, och hur man undviker att den citerar gamla versioner |
 | [Drift](../drift/) | Rutiner, övervakning, överlämning mellan styrelser och felsökning |
 | [Kostnader](../kostnader/) | Vad som ingår gratis, vad en fråga kostar och vad som händer vid större användning |
-| [Konfiguration](../konfiguration/) | Alla fält i `kar.config.json`, källtyper, färger och logga |
+| [Konfiguration](../konfiguration/) | Allt i `kar/`: fälten i `kar.config.json`, källtyper, färger och logga |
 | [Arkitektur](../arkitektur/) | Hur koden är uppdelad, fil för fil, och varför |
 | [Utvärdering](../utvardering/) | Hur man mäter att sökningen hittar rätt |
