@@ -61,7 +61,6 @@ const faq = [
 ];
 
 const DOCS_URL = kar.documentsUrl;
-const AUTHOR_URL = kar.author.url;
 
 function Index() {
   const navigate = useNavigate();
@@ -179,15 +178,25 @@ function Index() {
 
       <footer className="border-t border-hero-border">
         <div className="mx-auto flex max-w-4xl flex-col gap-2 px-6 py-10 text-xs font-light text-hero-muted sm:flex-row sm:items-center sm:justify-between">
+          {/* Samma kredit för alla kårer, därför i koden och inte i kar/. */}
           <p>
             Byggt av{" "}
             <a
-              href={AUTHOR_URL}
+              href="https://theodorlindberg.com"
               target="_blank"
               rel="noreferrer noopener"
               className="underline underline-offset-2 transition-colors hover:text-hero-fg"
             >
-              {kar.author.name}
+              Theodor Lindberg
+            </a>{" "}
+            ×{" "}
+            <a
+              href="https://tiom.nu"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="underline underline-offset-2 transition-colors hover:text-hero-fg"
+            >
+              TIOM
             </a>
           </p>
           <a

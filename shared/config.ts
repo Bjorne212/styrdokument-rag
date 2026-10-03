@@ -69,7 +69,6 @@ export type KarConfig = {
   botName: string;
   /** Länk till arkivet där människor själva kan läsa dokumenten. */
   documentsUrl: string;
-  author: { name: string; url: string };
   cloudflare: { workerName: string; indexName: string };
   source: SourceConfig;
   cleanup: {

@@ -5,10 +5,6 @@
   "description": "studentkåren vid Exempeluniversitetet",
   "botName": "Styrdokumentsboten",
   "documentsUrl": "https://exempelkaren.se/styrdokument",
-  "author": {
-    "name": "Ditt namn",
-    "url": "https://exempelkaren.se"
-  },
   "cloudflare": {
     "workerName": "exempelkaren-styrdokument-rag",
     "indexName": "exempelkaren-styrdokument"

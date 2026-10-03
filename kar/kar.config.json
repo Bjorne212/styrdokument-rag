@@ -5,10 +5,6 @@
   "description": "teknologsektionernas studentkår vid Linköpings universitet",
   "botName": "Styrdokumentsboten",
   "documentsUrl": "https://lintek-styrdokument.gitlab-pages.liu.se/allmant/",
-  "author": {
-    "name": "Theodor Lindberg",
-    "url": "https://www.linkedin.com/in/theodor-l-00245a203"
-  },
   "cloudflare": {
     "workerName": "lintek-styrdokument-rag",
     "indexName": "lintek-styrdokument"
