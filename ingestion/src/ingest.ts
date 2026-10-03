@@ -93,14 +93,26 @@ function contentOf(manifest: Manifest): string {
 }
 
 /**
- * Skriver manifestet, men bara om innehållet ändrats.
+ * Så gammal får tidsstämpeln bli innan manifestet skrivs ändå.
+ *
+ * GitHub stänger av schemalagda jobb i publika repon efter 60 dagar utan
+ * aktivitet. Workflowets commit av manifestet är det som håller repot aktivt
+ * när arkivet inte ändras, så den måste komma minst så ofta.
+ */
+const KEEPALIVE_DAYS = 30;
+
+/**
+ * Skriver manifestet när innehållet ändrats, eller när tidsstämpeln är äldre
+ * än KEEPALIVE_DAYS.
  *
  * Med en ny tidsstämpel vid varje körning blev filen alltid ändrad, och
  * workflowet committade "uppdatera dokumentmanifest" var sjätte timme utan att
- * något hänt i arkivet.
+ * något hänt i arkivet. Nu blir det högst en sådan commit i månaden.
  */
 async function saveManifest(manifest: Manifest, contentBefore: string): Promise<void> {
-  if (contentOf(manifest) === contentBefore) {
+  const age = Date.now() - Date.parse(manifest.updatedAt ?? "1970-01-01");
+  const stale = !(age < KEEPALIVE_DAYS * 24 * 60 * 60 * 1000);
+  if (contentOf(manifest) === contentBefore && !stale) {
     console.log("Manifestet oförändrat.");
     return;
   }
