@@ -40,7 +40,7 @@ Cloudflare Vectorize  ◄──────────────────�
 
 ## Guardrails add-on
 
-Optional, and off unless the worker has a `GUARD_KEY` secret. With a key, each question and the earlier questions in the conversation (never the answers) go to a separate guard service, asked while the documents are searched. It answers with one of three routes:
+Optional, and off unless the worker has a `GUARD_KEY` secret and `guardrails.url` is set in `kar/kar.config.json`; both come with the add-on. With them, each question and the earlier questions in the conversation (never the answers) go to a separate guard service, asked while the documents are searched. It answers with one of three routes:
 
 | Route | What the worker does |
 |---|---|

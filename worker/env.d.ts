@@ -15,7 +15,11 @@ interface Env {
    * Optional så att en Worker utan bindningen fungerar som förut.
    */
   CHAT_LIMIT?: RateLimit;
-  /** Guardrails-tillägget, se guard-client.ts. Avstängt utan GUARD_KEY. */
+  /**
+   * Guardrails-tillägget, se guard-client.ts. Avstängt utan GUARD_KEY.
+   * Adressen står i kar.config.json; GUARD_URL här är bara för tester och
+   * lokal utveckling.
+   */
   GUARD_URL?: string;
   /** Secret: kårens nyckel till guarden. */
   GUARD_KEY?: string;

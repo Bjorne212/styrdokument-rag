@@ -2,8 +2,9 @@
  * Guardrails-tillägget: frågar en extern guard-tjänst hur frågan ska hanteras.
  *
  * Tillägget är avstängt så länge GUARD_KEY saknas, och då beter sig Workern
- * precis som utan det. Med en nyckel skickas varje fråga till GUARD_URL, som
- * svarar med ett beslut:
+ * precis som utan det. Med en nyckel skickas varje fråga till guardens adress
+ * (`guardrails.url` i kar.config.json, som kåren får tillsammans med
+ * nyckeln), och guarden svarar med ett beslut:
  *
  *   ALLOW     svara som vanligt
  *   FILTERED  svara med skärpt prompt, utan tidigare samtal och kortare
@@ -96,9 +97,11 @@ const isDecision = (value: unknown): value is Decision => {
 export async function askGuard(env: Env, question: string, history: Exchange[]): Promise<GuardResponse | null> {
   if (!env.GUARD_KEY) return null;
 
-  const url = env.GUARD_URL ?? "";
+  // GUARD_URL i miljön går före, för tester och lokal utveckling mot en
+  // guard på den egna datorn. I drift kommer adressen från kar.config.json.
+  const url = env.GUARD_URL ?? kar.guardrails?.url ?? "";
   if (!isSafeGuardUrl(url)) {
-    console.log("Guardrails: GUARD_KEY finns men GUARD_URL saknas eller är inte https. Frågan behandlas som FILTERED.");
+    console.log("Guardrails: GUARD_KEY finns men guardrails.url saknas eller är inte https. Frågan behandlas som FILTERED.");
     return FAIL_SAFE_RESPONSE;
   }
 

@@ -42,12 +42,9 @@ TOP_K = "8"
 
 # Guardrails-tillägget. Avstängt tills Workern har en nyckel:
 #   npx wrangler secret put GUARD_KEY
-# Utan nyckel används inte adressen, och ingen fråga lämnar Cloudflare-kontot.
-# Med nyckel skickas frågan och tidigare frågor (aldrig svar) hit för bedömning.
-# Adressen är densamma för alla kårer och fylls i här, i mallen, när guarden
-# är i drift. En kår ändrar den inte.
-GUARD_URL = ""
-
+# Adressen står i kar/kar.config.json (guardrails.url) och följer med nyckeln.
+# Utan nyckel används den inte, och ingen fråga lämnar Cloudflare-kontot. Med
+# nyckel skickas frågan och tidigare frågor (aldrig svar) dit för bedömning.
 # Hur länge vi väntar på guarden innan frågan behandlas som FILTERED. Måste vara
 # längre än guardens egen gräns mot sin modell (1 500 ms), annars ger vi upp
 # precis innan guarden hade svarat.

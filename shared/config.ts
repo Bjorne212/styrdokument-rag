@@ -78,8 +78,12 @@ export type KarConfig = {
     /** Extra ord som bara förekommer i svensk text, för språkgissningen. */
     swedishMarkers: string[];
   };
-  /** Valfri. Saknas den används standardtexterna i guard-client.ts. */
-  guardrails?: Partial<GuardrailsTexts>;
+  /**
+   * Valfri. Texterna ersätter standardtexterna i guard-client.ts. `url` är
+   * guardrails-tjänstens adress, som kåren får tillsammans med sin nyckel:
+   * utan den, eller utan GUARD_KEY, är tillägget avstängt.
+   */
+  guardrails?: Partial<GuardrailsTexts> & { url?: string };
 };
 
 export const kar = raw as KarConfig;

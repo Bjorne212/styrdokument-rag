@@ -65,8 +65,12 @@ if (!Array.isArray(config.cleanup?.boilerplate)) problems.push("cleanup.boilerpl
 if (!Array.isArray(config.cleanup?.swedishMarkers)) problems.push("cleanup.swedishMarkers måste vara en lista");
 if (config.guardrails !== undefined) {
   for (const key of Object.keys(config.guardrails)) {
-    if (!["refusal", "greeting", "meta"].includes(key)) problems.push(`guardrails.${key} är okänd`);
+    if (!["refusal", "greeting", "meta", "url"].includes(key)) problems.push(`guardrails.${key} är okänd`);
     else need(`guardrails.${key}`, config.guardrails[key]);
+  }
+  // Nyckeln skickas till adressen, så den måste vara krypterad.
+  if (config.guardrails.url !== undefined && !String(config.guardrails.url).startsWith("https://")) {
+    problems.push("guardrails.url måste börja med https://");
   }
 }
 
